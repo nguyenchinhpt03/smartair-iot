@@ -1,0 +1,30 @@
+# Environment & Secrets
+.env
+*.env
+firebase-service-account.json
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Flutter / Mobile
+.dart_tool/
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+build/
+.idea/
+
+# PlatformIO / Firmware
+.pio/
+.vscode/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
