@@ -7,8 +7,8 @@
 // ═══════════════════════════════════════════════════════════════════
 //  CẤU HÌNH HỆ THỐNG
 // ═══════════════════════════════════════════════════════════════════
-// IP LAN máy tính chạy Backend Node.js: 192.168.1.251
-static const char* SERVER_URL    = "http://192.168.1.251:3000/api/reading";
+// URL Server Backend Online Render:
+static const char* SERVER_URL    = "https://smartair-backend.onrender.com/api/reading";
 static const char* DEVICE_ID     = "SA-001";
 
 // ── Pin Còi Buzzer & Đèn LED RGB ──────────────────────────────────

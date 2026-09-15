@@ -37,6 +37,8 @@ void wifi_reset_settings() {
     Serial.println("[WiFiManager] Đã xóa bộ nhớ Wi-Fi.");
 }
 
+#include <WiFiClientSecure.h>
+
 int send_reading(const char* server_url, const char* device_id, const SensorReading &r) {
     if (WiFi.status() != WL_CONNECTED) {
         Serial.println("[HTTP] Mất WiFi — bỏ qua lần gửi này");
@@ -64,11 +66,23 @@ int send_reading(const char* server_url, const char* device_id, const SensorRead
     serializeJson(doc, body);
 
     HTTPClient http;
-    http.begin(server_url);
-    http.addHeader("Content-Type", "application/json");
-    http.setTimeout(5000);  // 5s — không chờ lâu hơn để không block loop()
+    int code = -1;
 
-    int code = http.POST(body);
+    if (strncmp(server_url, "https://", 8) == 0) {
+        WiFiClientSecure client;
+        client.setInsecure(); // Bỏ qua verify cert CA để kết nối Cloud HTTPS dễ dàng
+        http.begin(client, server_url);
+        http.addHeader("Content-Type", "application/json");
+        http.setTimeout(10000); // 10s cho HTTPS
+        code = http.POST(body);
+        http.end();
+    } else {
+        http.begin(server_url);
+        http.addHeader("Content-Type", "application/json");
+        http.setTimeout(5000);
+        code = http.POST(body);
+        http.end();
+    }
 
     if (code == 200) {
         Serial.printf("[HTTP] OK — AQI=%d PM2.5=%.1f\n", r.aqi, r.pm25_ugm3);
@@ -78,6 +92,5 @@ int send_reading(const char* server_url, const char* device_id, const SensorRead
         Serial.printf("[HTTP] Server trả lỗi: %d\n", code);
     }
 
-    http.end();
     return code;
 }
