@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import '../services/api_service.dart';
 import 'destination_detail_screen.dart';
+import 'chat_screen.dart';
 
 class EcoTourismScreen extends StatefulWidget {
-  const EcoTourismScreen({super.key});
+  final String? activeDeviceId;
+  const EcoTourismScreen({super.key, this.activeDeviceId});
 
   @override
   State<EcoTourismScreen> createState() => _EcoTourismScreenState();
@@ -12,9 +15,14 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
   String _selectedRegion = 'Tất cả';
   final TextEditingController _searchCtrl = TextEditingController();
   String _searchQuery = '';
+  String _forecastMode = 'weekly'; // 'daily' hoặc 'weekly'
+  bool _loading = false;
+  List<Map<String, dynamic>> _destinationsData = [];
 
-  static const List<Map<String, dynamic>> _destinations = [
+  // Dữ liệu mặc định ban đầu phong phú
+  static const List<Map<String, dynamic>> _fallbackDestinations = [
     {
+      'id': 'sapa',
       'name': 'Thị Trấn Trong Sương Sapa',
       'sub': 'Nóc Nhà Đông Dương & Xứ Sở Mây Ngàn',
       'location': 'Lào Cai (Cách Hà Nội ~315km)',
@@ -23,7 +31,7 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
       'duration': '4.5 - 5 giờ',
       'aqi': 12,
       'aqiStatus': 'Hoàn hảo',
-      'temp': '14 - 19°C',
+      'temp': '13 - 19°C',
       'humidity': '82%',
       'rating': 5.0,
       'imageUrl':
@@ -43,8 +51,23 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
         'Dạo bản Cát Cát',
         'Tắm lá thuốc người Dao đỏ'
       ],
+      'weekly_forecast': [
+        {'day': 'Thứ 2', 'temp': '13 - 18°C', 'icon': '🌤️', 'cond': 'Nắng nhẹ, se lạnh'},
+        {'day': 'Thứ 3', 'temp': '14 - 19°C', 'icon': '⛅', 'cond': 'Nhiều mây, thoáng'},
+        {'day': 'Thứ 4', 'temp': '12 - 17°C', 'icon': '🌫️', 'cond': 'Sương mù dày'},
+        {'day': 'Thứ 5', 'temp': '13 - 18°C', 'icon': '☀️', 'cond': 'Hửng nắng trưa'},
+        {'day': 'Thứ 6', 'temp': '14 - 20°C', 'icon': '🍃', 'cond': 'Gió mát dịu'},
+        {'day': 'Thứ 7', 'temp': '12 - 19°C', 'icon': '🏔️', 'cond': 'Biển mây Fansipan'},
+        {'day': 'Chủ Nhật', 'temp': '13 - 18°C', 'icon': '🌅', 'cond': 'Hoàng hôn Ô Quy Hồ'},
+      ],
+      'daily_forecast': [
+        {'period': 'Hôm nay', 'temp': '14 - 19°C', 'icon': '🌤️', 'advice': 'Khí hậu mát mẻ, cần áo ấm mỏng vào chiều tối.'},
+        {'period': 'Ngày mai', 'temp': '13 - 18°C', 'icon': '⛅', 'advice': 'Độ ẩm 80%, sáng sớm có sương mù nhẹ lãng mạn.'},
+        {'period': 'Cuối tuần', 'temp': '12 - 19°C', 'icon': '🏔️', 'advice': 'Thời điểm vàng để leo đỉnh Fansipan săn mây!'},
+      ]
     },
     {
+      'id': 'bavi',
       'name': 'Vườn Quốc Gia Ba Vì',
       'sub': 'Lá Phổi Xanh Thủ Đô',
       'location': 'Hà Nội (Cách trung tâm 55km)',
@@ -53,7 +76,7 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
       'duration': '1.5 giờ',
       'aqi': 18,
       'aqiStatus': 'Rất trong lành',
-      'temp': '20 - 24°C',
+      'temp': '19 - 25°C',
       'humidity': '72%',
       'rating': 4.9,
       'imageUrl':
@@ -62,17 +85,32 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
           'Bạt ngàn rừng thông cổ thụ, suối nước khoáng và không khí thanh lọc phổi tự nhiên. Điểm dã ngoại cắm trại cuối tuần tuyệt vời nhất cho các gia đình.',
       'tags': ['Cắm trại', 'Đồi thông', 'Khí hậu mát lành', 'Picnic gia đình'],
       'activities': ['Leo đỉnh Vua', 'Vườn xương rồng', 'Thưởng thức gà đồi'],
+      'weekly_forecast': [
+        {'day': 'Thứ 2', 'temp': '20 - 25°C', 'icon': '☀️', 'cond': 'Nắng ấm trong lành'},
+        {'day': 'Thứ 3', 'temp': '19 - 24°C', 'icon': '🍃', 'cond': 'Gió rừng thông'},
+        {'day': 'Thứ 4', 'temp': '21 - 26°C', 'icon': '🌤️', 'cond': 'Trời trong xanh'},
+        {'day': 'Thứ 5', 'temp': '20 - 25°C', 'icon': '⛅', 'cond': 'Mây mỏng che mát'},
+        {'day': 'Thứ 6', 'temp': '19 - 24°C', 'icon': '🌿', 'cond': 'Khí hậu dịu mát'},
+        {'day': 'Thứ 7', 'temp': '18 - 23°C', 'icon': '🏕️', 'cond': 'Lý tưởng cắm trại'},
+        {'day': 'Chủ Nhật', 'temp': '19 - 24°C', 'icon': '🌲', 'cond': 'Dã ngoại gia đình'},
+      ],
+      'daily_forecast': [
+        {'period': 'Hôm nay', 'temp': '20 - 25°C', 'icon': '☀️', 'advice': 'Trời nắng dịu, đường khô ráo rất đẹp.'},
+        {'period': 'Ngày mai', 'temp': '19 - 24°C', 'icon': '🍃', 'advice': 'Gió rừng thông mát mẻ, nồng độ oxy cao.'},
+        {'period': 'Cuối tuần', 'temp': '18 - 23°C', 'icon': '🏕️', 'advice': 'Nhiệt độ đồi thông giảm 3°C, tuyệt hảo để cắm trại.'},
+      ]
     },
     {
+      'id': 'tamdao',
       'name': 'Thị Trấn Trong Mây Tam Đảo',
       'sub': 'Đà Lạt Thu Nhỏ Phía Bắc',
       'location': 'Vĩnh Phúc (Cách Hà Nội 75km)',
       'region': 'Miền Bắc',
       'distance': '~75 km',
       'duration': '1.5 - 2 giờ',
-      'aqi': 22,
+      'aqi': 20,
       'aqiStatus': 'Tuyệt vời',
-      'temp': '17 - 21°C',
+      'temp': '16 - 22°C',
       'humidity': '78%',
       'rating': 4.8,
       'imageUrl':
@@ -81,8 +119,23 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
           'Nằm trên độ cao hơn 900m, quanh năm mây mù bao phủ, khí hậu 4 mùa trong 1 ngày, nồng độ oxy cao giúp cơ thể xua tan mọi mệt mỏi.',
       'tags': ['Nghỉ dưỡng', 'Săn mây', 'Khách sạn view núi', 'Ẩm thực su su'],
       'activities': ['Tháp truyền hình', 'Cổng Trời', 'Nhà thờ đá cổ'],
+      'weekly_forecast': [
+        {'day': 'Thứ 2', 'temp': '17 - 22°C', 'icon': '⛅', 'cond': 'Mây vờn sườn núi'},
+        {'day': 'Thứ 3', 'temp': '16 - 21°C', 'icon': '🌫️', 'cond': 'Sương phủ lãng mạn'},
+        {'day': 'Thứ 4', 'temp': '17 - 23°C', 'icon': '🌤️', 'cond': 'Nắng nhẹ ban trưa'},
+        {'day': 'Thứ 5', 'temp': '16 - 22°C', 'icon': '🍃', 'cond': 'Khí hậu dịu mát'},
+        {'day': 'Thứ 6', 'temp': '15 - 21°C', 'icon': '☁️', 'cond': 'Biển mây bềnh bồng'},
+        {'day': 'Thứ 7', 'temp': '15 - 20°C', 'icon': '🏰', 'cond': 'Đẹp như châu Âu'},
+        {'day': 'Chủ Nhật', 'temp': '16 - 21°C', 'icon': '☕', 'cond': 'Cafe ngắm hoàng hôn'},
+      ],
+      'daily_forecast': [
+        {'period': 'Hôm nay', 'temp': '17 - 22°C', 'icon': '⛅', 'advice': 'Buổi chiều mát lạnh, thích hợp dạo chợ đêm.'},
+        {'period': 'Ngày mai', 'temp': '16 - 21°C', 'icon': '🌫️', 'advice': 'Độ ẩm 78%, sương mù sáng sớm ôm trọn quảng trường.'},
+        {'period': 'Cuối tuần', 'temp': '15 - 20°C', 'icon': '🏰', 'advice': 'Thời tiết 4 mùa trong ngày, mang áo ấm đi dạo phố.'},
+      ]
     },
     {
+      'id': 'mocchau',
       'name': 'Thiên Đường Xanh Mộc Châu',
       'sub': 'Xứ Sở Chè & Thảo Nguyên',
       'location': 'Sơn La (Cách Hà Nội ~190km)',
@@ -91,78 +144,66 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
       'duration': '4 giờ',
       'aqi': 15,
       'aqiStatus': 'Hoàn hảo',
-      'temp': '18 - 23°C',
+      'temp': '17 - 24°C',
       'humidity': '65%',
       'rating': 4.9,
       'imageUrl':
           'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=800&auto=format&fit=crop&q=80',
       'highlight':
           'Cao nguyên xanh ngát mênh mông với những đồi chè trái tim, vườn mận nở trắng rừng và không gian sinh thái nguyên sơ, trong vắt.',
-      'tags': [
-        'Đồi chè',
-        'Rừng thông Bản Áng',
-        'Thác Dải Yếm',
-        'Sữa chua nếp cẩm'
-      ],
+      'tags': ['Đồi chè', 'Rừng thông Bản Áng', 'Thác Dải Yếm', 'Sữa chua nếp cẩm'],
       'activities': ['Chụp ảnh đồi chè', 'Hái dâu tây', 'Khám phá thác nước'],
+      'weekly_forecast': [
+        {'day': 'Thứ 2', 'temp': '17 - 23°C', 'icon': '☀️', 'cond': 'Nắng ráo thảo nguyên'},
+        {'day': 'Thứ 3', 'temp': '18 - 24°C', 'icon': '🍃', 'cond': 'Gió cao nguyên'},
+        {'day': 'Thứ 4', 'temp': '17 - 23°C', 'icon': '🌤️', 'cond': 'Trời xanh trong'},
+        {'day': 'Thứ 5', 'temp': '18 - 24°C', 'icon': '🌾', 'cond': 'Đồi chè xanh mướt'},
+        {'day': 'Thứ 6', 'temp': '16 - 22°C', 'icon': '⛅', 'cond': 'Mát dịu dễ chịu'},
+        {'day': 'Thứ 7', 'temp': '16 - 23°C', 'icon': '🍓', 'cond': 'Hái dâu cắm trại'},
+        {'day': 'Chủ Nhật', 'temp': '17 - 23°C', 'icon': '🌲', 'cond': 'Rừng thông trong lành'},
+      ],
+      'daily_forecast': [
+        {'period': 'Hôm nay', 'temp': '18 - 24°C', 'icon': '☀️', 'advice': 'Độ ẩm 65%, rất khô ráo dễ chịu để chụp ảnh đồi chè.'},
+        {'period': 'Ngày mai', 'temp': '17 - 23°C', 'icon': '🍃', 'advice': 'Nắng nhẹ ấm áp, thích hợp tham quan vườn dâu.'},
+        {'period': 'Cuối tuần', 'temp': '16 - 23°C', 'icon': '🏕️', 'advice': 'Ban đêm se lạnh 16°C, cắm trại rừng thông nhớ chăn ấm.'},
+      ]
     },
     {
-      'name': 'Quần Thể Danh Thắng Tràng An',
-      'sub': 'Di Sản Văn Hóa & Thiên Nhiên Thế Giới',
-      'location': 'Ninh Bình (Cách Hà Nội 95km)',
-      'region': 'Miền Bắc',
-      'distance': '~95 km',
-      'duration': '1.5 - 2 giờ',
-      'aqi': 24,
-      'aqiStatus': 'Rất trong lành',
-      'temp': '22 - 26°C',
-      'humidity': '75%',
-      'rating': 5.0,
-      'imageUrl':
-          'https://images.unsplash.com/photo-1570789210967-2cac24afeb00?w=800&auto=format&fit=crop&q=80',
-      'highlight':
-          'Hệ sinh thái núi đá vôi ngập nước ngoạn mục, chèo thuyền nan len lỏi qua các hang động kỳ bí trên làn nước xanh ngọc bích.',
-      'tags': [
-        'Di sản UNESCO',
-        'Đi thuyền nan',
-        'Non nước hữu tình',
-        'Hang động'
-      ],
-      'activities': [
-        'Chèo thuyền Tràng An',
-        'Thăm chùa Bái Đính',
-        'Thưởng thức dê núi'
-      ],
-    },
-    {
+      'id': 'puluong',
       'name': 'Khu Bảo Tồn Pù Luông',
-      'sub': 'Thiên Nhiên Nguyên Sơ Tây Bắc Thu Nhỏ',
+      'sub': 'Thung Lũng Đại Ngàn Thanh Bình',
       'location': 'Thanh Hóa (Cách Hà Nội 175km)',
       'region': 'Miền Trung',
       'distance': '~175 km',
-      'duration': '4 giờ',
-      'aqi': 16,
+      'duration': '3.5 - 4 giờ',
+      'aqi': 14,
       'aqiStatus': 'Hoàn hảo',
-      'temp': '19 - 24°C',
-      'humidity': '79%',
+      'temp': '19 - 26°C',
+      'humidity': '76%',
       'rating': 4.9,
       'imageUrl':
           'https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=800&auto=format&fit=crop&q=80',
       'highlight':
           'Rừng nguyên sinh ngút ngàn, thung lũng lúa xanh mướt và những guồng nước mộc mạc mang lại sự tĩnh lặng tuyệt đối cho tâm hồn.',
-      'tags': [
-        'Ruộng bậc thang',
-        'Resort vô cực',
-        'Guồng nước',
-        'Trekking bản làng'
+      'tags': ['Ruộng bậc thang', 'Resort vô cực', 'Guồng nước', 'Trekking bản làng'],
+      'activities': ['Tắm suối Hiêu', 'Bơi hồ vô cực ngắm thung lũng', 'Check-in bản Đôn'],
+      'weekly_forecast': [
+        {'day': 'Thứ 2', 'temp': '20 - 26°C', 'icon': '☀️', 'cond': 'Nắng vàng thung lũng'},
+        {'day': 'Thứ 3', 'temp': '21 - 27°C', 'icon': '🍃', 'cond': 'Gió suối mát'},
+        {'day': 'Thứ 4', 'temp': '20 - 26°C', 'icon': '🌤️', 'cond': 'Trời trong xanh'},
+        {'day': 'Thứ 5', 'temp': '19 - 25°C', 'icon': '⛅', 'cond': 'Mây nhẹ ôm bản'},
+        {'day': 'Thứ 6', 'temp': '20 - 26°C', 'icon': '🌾', 'cond': 'Lúa xanh mơn mởn'},
+        {'day': 'Thứ 7', 'temp': '19 - 25°C', 'icon': '🏊', 'cond': 'Bơi hồ vô cực'},
+        {'day': 'Chủ Nhật', 'temp': '20 - 26°C', 'icon': '🌄', 'cond': 'Hoàng hôn đại ngàn'},
       ],
-      'activities': [
-        'Tắm suối Hiêu',
-        'Bơi hồ vô cực ngắm thung lũng',
-        'Check-in bản Đôn'
-      ],
+      'daily_forecast': [
+        {'period': 'Hôm nay', 'temp': '20 - 26°C', 'icon': '☀️', 'advice': 'Không khí cực sạch AQI 14, rất tốt cho hệ hô hấp.'},
+        {'period': 'Ngày mai', 'temp': '19 - 25°C', 'icon': '🍃', 'advice': 'Khí hậu thung lũng trong lành, thư thái nghỉ dưỡng.'},
+        {'period': 'Cuối tuần', 'temp': '19 - 25°C', 'icon': '🏊', 'advice': 'Bơi hồ bơi vô cực ngắm ruộng bậc thang tuyệt đỉnh!'},
+      ]
     },
     {
+      'id': 'dalat',
       'name': 'Thành Phố Ngàn Hoa Đà Lạt',
       'sub': 'Xứ Sở Rừng Thông & Khí Hậu Ôn Đới',
       'location': 'Lâm Đồng (Tây Nguyên)',
@@ -171,45 +212,50 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
       'duration': '5 - 6 giờ xe / Bay 45p',
       'aqi': 14,
       'aqiStatus': 'Hoàn hảo',
-      'temp': '15 - 22°C',
+      'temp': '14 - 22°C',
       'humidity': '80%',
       'rating': 5.0,
       'imageUrl':
           'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80',
       'highlight':
           'Thủ phủ nghỉ dưỡng vi khí hậu mát lạnh hàng đầu cả nước với bạt ngàn rừng thông ba lá tạo nồng độ oxy và ion âm cực lớn.',
-      'tags': [
-        'Rừng thông',
-        'Hồ Tuyền Lâm',
-        'Đồi hoa cẩm tú cầu',
-        'Cafe ngắm mây'
-      ],
+      'tags': ['Rừng thông', 'Hồ Tuyền Lâm', 'Đồi hoa cẩm tú cầu', 'Cafe ngắm mây'],
       'activities': ['Chèo SUP hồ Tuyền Lâm', 'Săn mây Cầu Đất', 'Hái dâu tây'],
-    },
-    {
-      'name': 'Khu Nghỉ Dưỡng Bà Nà Hills',
-      'sub': 'Đường Lên Tiên Cảnh',
-      'location': 'Đà Nẵng (Độ cao 1.487m)',
-      'region': 'Miền Trung',
-      'distance': '~35 km từ Đà Nẵng',
-      'duration': '45 phút',
-      'aqi': 15,
-      'aqiStatus': 'Hoàn hảo',
-      'temp': '17 - 20°C',
-      'humidity': '75%',
-      'rating': 4.9,
-      'imageUrl':
-          'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=800&auto=format&fit=crop&q=80',
-      'highlight':
-          'Nằm trên đỉnh núi Chúa hùng vĩ với khí hậu 4 mùa trong 1 ngày, Cầu Vàng nổi tiếng thế giới và làng Pháp lãng mạn giữa mây ngàn.',
-      'tags': ['Cầu Vàng', 'Cáp treo kỷ lục', 'Làng Pháp', 'Khí hậu mát mẻ'],
-      'activities': [
-        'Đi bộ trên Cầu Vàng',
-        'Đi cáp treo ngắm thác',
-        'Lễ hội hoa'
+      'weekly_forecast': [
+        {'day': 'Thứ 2', 'temp': '15 - 22°C', 'icon': '⛅', 'cond': 'Mát dịu se lạnh'},
+        {'day': 'Thứ 3', 'temp': '14 - 21°C', 'icon': '🌫️', 'cond': 'Sương sớm hồ Tuyền Lâm'},
+        {'day': 'Thứ 4', 'temp': '15 - 22°C', 'icon': '☀️', 'cond': 'Nắng vàng đồi chè'},
+        {'day': 'Thứ 5', 'temp': '14 - 22°C', 'icon': '🍃', 'cond': 'Gió rừng thông vi vu'},
+        {'day': 'Thứ 6', 'temp': '13 - 21°C', 'icon': '☕', 'cond': 'Cực hợp uống cafe ấm'},
+        {'day': 'Thứ 7', 'temp': '13 - 20°C', 'icon': '☁️', 'cond': 'Săn mây Cầu Đất'},
+        {'day': 'Chủ Nhật', 'temp': '14 - 21°C', 'icon': '🍓', 'cond': 'Vườn dâu thơm mát'},
       ],
+      'daily_forecast': [
+        {'period': 'Hôm nay', 'temp': '15 - 22°C', 'icon': '⛅', 'advice': 'Thời tiết se lạnh êm đềm, cần áo len nhẹ vào ban đêm.'},
+        {'period': 'Ngày mai', 'temp': '14 - 21°C', 'icon': '🌫️', 'advice': 'Sáng sớm 14°C sương mù dày, 8h hửng nắng vàng.'},
+        {'period': 'Cuối tuần', 'temp': '13 - 20°C', 'icon': '☁️', 'advice': 'Săn mây Cầu Đất vào 5h30 sáng cực kỳ ngoạn mục!'},
+      ]
     },
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _destinationsData = List.from(_fallbackDestinations);
+    _loadOnlineDestinations();
+  }
+
+  Future<void> _loadOnlineDestinations() async {
+    try {
+      final online = await ApiService().getTourismDestinations();
+      if (online.isNotEmpty && mounted) {
+        setState(() {
+          // Merge hoặc cập nhật dữ liệu online
+          _destinationsData = online.map((e) => Map<String, dynamic>.from(e as Map)).toList();
+        });
+      }
+    } catch (_) {}
+  }
 
   Color _aqiColor(int aqi) {
     if (aqi <= 20) return const Color(0xFF00C853);
@@ -225,24 +271,25 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final filtered = _destinations.where((d) {
+    final filtered = _destinationsData.where((d) {
       final matchesRegion =
           _selectedRegion == 'Tất cả' || d['region'] == _selectedRegion;
       final query = _searchQuery.toLowerCase().trim();
-      final matchesSearch = query.isEmpty ||
-          (d['name'] as String).toLowerCase().contains(query) ||
-          (d['location'] as String).toLowerCase().contains(query) ||
-          (d['sub'] as String).toLowerCase().contains(query);
+      final name = (d['name'] ?? '').toString().toLowerCase();
+      final loc = (d['location'] ?? '').toString().toLowerCase();
+      final sub = (d['sub'] ?? '').toString().toLowerCase();
+      final matchesSearch =
+          query.isEmpty || name.contains(query) || loc.contains(query) || sub.contains(query);
       return matchesRegion && matchesSearch;
     }).toList();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF2F7F4),
+      backgroundColor: const Color(0xFFF1F6F3),
       body: CustomScrollView(
         slivers: [
-          // ── SliverAppBar với ảnh nền Parallax & Gradient ──
+          // ── SliverAppBar với ảnh nền Parallax & Gradient Xanh Sinh Thái ──
           SliverAppBar(
-            expandedHeight: 250,
+            expandedHeight: 260,
             pinned: true,
             backgroundColor: const Color(0xFF004D40),
             flexibleSpace: FlexibleSpaceBar(
@@ -271,15 +318,15 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
-                          Colors.black.withValues(alpha: 0.25),
-                          const Color(0xFF004D40).withValues(alpha: 0.85),
+                          Colors.black.withValues(alpha: 0.35),
+                          const Color(0xFF004D40).withValues(alpha: 0.90),
                         ],
                         stops: const [0.0, 0.9],
                       ),
                     ),
                   ),
                   Positioned(
-                    top: 65,
+                    top: 60,
                     left: 20,
                     right: 20,
                     child: Column(
@@ -287,19 +334,33 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                       children: [
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 4),
+                              horizontal: 10, vertical: 5),
                           decoration: BoxDecoration(
                             color: const Color(0xFF00E676),
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFF00E676).withValues(alpha: 0.4),
+                                blurRadius: 8,
+                                offset: const Offset(0, 2),
+                              )
+                            ],
                           ),
-                          child: const Text(
-                            'GỢI Ý CUỐI TUẦN CHO GIA ĐÌNH',
-                            style: TextStyle(
-                              color: Color(0xFF00382E),
-                              fontSize: 10.5,
-                              fontWeight: FontWeight.w900,
-                              letterSpacing: 0.8,
-                            ),
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.auto_awesome, size: 13, color: Color(0xFF00382E)),
+                              SizedBox(width: 4),
+                              Text(
+                                'AI DỰ BÁO KHÍ HẬU & NHIỆT ĐỘ',
+                                style: TextStyle(
+                                  color: Color(0xFF00382E),
+                                  fontSize: 10.5,
+                                  fontWeight: FontWeight.w900,
+                                  letterSpacing: 0.6,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -307,7 +368,7 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                           'Trốn Khói Bụi, Hít Thở Khí Lành',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 22,
+                            fontSize: 21,
                             fontWeight: FontWeight.w900,
                             shadows: [
                               Shadow(
@@ -319,9 +380,9 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'Khám phá các điểm đến có chỉ số AQI tuyệt hảo và cảnh quan thiên nhiên kỳ vĩ.',
+                          'Cập nhật thời tiết theo ngày & tuần từ AI SmartAir cho các tọa độ xanh.',
                           style: TextStyle(
-                            color: Colors.white.withValues(alpha: 0.9),
+                            color: Colors.white.withValues(alpha: 0.92),
                             fontSize: 12.5,
                           ),
                         ),
@@ -333,19 +394,85 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
             ),
           ),
 
-          // ── Search Bar & Filter Chips ──
+          // ── AI Climate Advisory Banner ──
+          SliverToBoxAdapter(
+            child: Container(
+              margin: const EdgeInsets.fromLTRB(16, 14, 16, 8),
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF004D40), Color(0xFF00796B)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(18),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF004D40).withValues(alpha: 0.25),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.18),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(Icons.wb_sunny_outlined, color: Color(0xFFFFD600), size: 24),
+                  ),
+                  const SizedBox(width: 12),
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'Nhận định tuần từ AI SmartAir',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                              ),
+                            ),
+                            SizedBox(width: 6),
+                            Icon(Icons.verified, size: 14, color: Color(0xFF64FFDA)),
+                          ],
+                        ),
+                        SizedBox(height: 3),
+                        Text(
+                          'Tuần này các điểm Ba Vì, Tam Đảo & Mộc Châu có nhiệt độ se mát 16-24°C, AQI cực sạch (<20). Cuối tuần nắng đẹp, không mưa, rất thuận lợi để dã ngoại!',
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 11.5,
+                            height: 1.35,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // ── Search Bar, Mode Switch & Region Filter ──
           SliverToBoxAdapter(
             child: Container(
               color: Colors.white,
-              padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),
               child: Column(
                 children: [
-                  // Ô Tìm kiếm
+                  // Search Bar
                   TextField(
                     controller: _searchCtrl,
                     onChanged: (val) => setState(() => _searchQuery = val),
                     decoration: InputDecoration(
-                      hintText: 'Tìm Sapa, Tam Đảo, Ba Vì, Mộc Châu...',
+                      hintText: 'Tìm Sapa, Tam Đảo, Ba Vì, Mộc Châu, Đà Lạt...',
                       hintStyle:
                           TextStyle(fontSize: 13, color: Colors.grey.shade400),
                       prefixIcon: const Icon(Icons.search,
@@ -369,8 +496,110 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 12),
+
+                  // Thanh chuyển đổi Chế độ Xem: Theo Tuần vs Theo Ngày
+                  Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFE0F2F1),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () => setState(() => _forecastMode = 'weekly'),
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 200),
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              decoration: BoxDecoration(
+                                color: _forecastMode == 'weekly'
+                                    ? const Color(0xFF00796B)
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: _forecastMode == 'weekly'
+                                    ? [
+                                        BoxShadow(
+                                          color: const Color(0xFF00796B).withValues(alpha: 0.3),
+                                          blurRadius: 6,
+                                          offset: const Offset(0, 2),
+                                        )
+                                      ]
+                                    : null,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.calendar_view_week_rounded,
+                                    size: 16,
+                                    color: _forecastMode == 'weekly' ? Colors.white : const Color(0xFF004D40),
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    'Dự Báo 7 Ngày Trong Tuần',
+                                    style: TextStyle(
+                                      color: _forecastMode == 'weekly' ? Colors.white : const Color(0xFF004D40),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () => setState(() => _forecastMode = 'daily'),
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 200),
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              decoration: BoxDecoration(
+                                color: _forecastMode == 'daily'
+                                    ? const Color(0xFF00796B)
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: _forecastMode == 'daily'
+                                    ? [
+                                        BoxShadow(
+                                          color: const Color(0xFF00796B).withValues(alpha: 0.3),
+                                          blurRadius: 6,
+                                          offset: const Offset(0, 2),
+                                        )
+                                      ]
+                                    : null,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.today_rounded,
+                                    size: 16,
+                                    color: _forecastMode == 'daily' ? Colors.white : const Color(0xFF004D40),
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    'Dự Báo Hôm Nay & Cuối Tuần',
+                                    style: TextStyle(
+                                      color: _forecastMode == 'daily' ? Colors.white : const Color(0xFF004D40),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
                   const SizedBox(height: 10),
-                  // Filter Chips
+
+                  // Region Filter Chips
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
@@ -392,7 +621,7 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                               fontWeight: isSelected
                                   ? FontWeight.bold
                                   : FontWeight.normal,
-                              fontSize: 12.5,
+                              fontSize: 12,
                             ),
                             backgroundColor: const Color(0xFFF0F4F2),
                             checkmarkColor: Colors.white,
@@ -411,7 +640,7 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
 
           // ── Danh sách điểm đến ──
           SliverPadding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 100),
             sliver: SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
@@ -429,11 +658,21 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
 
   Widget _buildDestinationCard(
       BuildContext context, Map<String, dynamic> dest) {
-    final aqi = dest['aqi'] as int;
+    final aqi = (dest['aqi'] as num?)?.toInt() ?? 15;
     final aqiCol = _aqiColor(aqi);
 
+    final weeklyForecast = dest['weekly_forecast'] as List<dynamic>? ??
+        (dest['forecast'] != null && dest['forecast']['weekly'] != null
+            ? dest['forecast']['weekly'] as List<dynamic>
+            : []);
+
+    final dailyForecast = dest['daily_forecast'] as List<dynamic>? ??
+        (dest['forecast'] != null && dest['forecast']['daily'] != null
+            ? dest['forecast']['daily'] as List<dynamic>
+            : []);
+
     return Container(
-      margin: const EdgeInsets.only(bottom: 20),
+      margin: const EdgeInsets.only(bottom: 22),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(22),
@@ -455,7 +694,8 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
               AspectRatio(
                 aspectRatio: 16 / 9,
                 child: Image.network(
-                  dest['imageUrl'] as String,
+                  dest['imageUrl'] as String? ??
+                      'https://images.unsplash.com/photo-1528127269322-539801943592?w=800&auto=format&fit=crop&q=80',
                   fit: BoxFit.cover,
                   errorBuilder: (_, __, ___) => Container(
                     color: const Color(0xFF004D40),
@@ -473,7 +713,7 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                       colors: [
                         Colors.black.withValues(alpha: 0.3),
                         Colors.transparent,
-                        Colors.black.withValues(alpha: 0.6),
+                        Colors.black.withValues(alpha: 0.65),
                       ],
                       stops: const [0.0, 0.4, 1.0],
                     ),
@@ -503,7 +743,7 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                       const Icon(Icons.eco, size: 14, color: Colors.white),
                       const SizedBox(width: 4),
                       Text(
-                        'AQI $aqi • ${dest['aqiStatus']}',
+                        'AQI $aqi • ${dest['aqiStatus'] ?? "Trong lành"}',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 11.5,
@@ -522,7 +762,7 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Colors.black.withValues(alpha: 0.6),
+                    color: Colors.black.withValues(alpha: 0.65),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
@@ -561,7 +801,7 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                           size: 13, color: Color(0xFFFFD600)),
                       const SizedBox(width: 3),
                       Text(
-                        '${dest['rating']}',
+                        '${dest['rating'] ?? "5.0"}',
                         style: const TextStyle(
                             color: Colors.white,
                             fontSize: 11,
@@ -574,7 +814,7 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
             ],
           ),
 
-          // ── Nội dung thông tin ──
+          // ── Nội dung thông tin & Dự báo thời tiết AI ──
           Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -588,7 +828,7 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            dest['name'] as String,
+                            dest['name'] as String? ?? '',
                             style: const TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.w800,
@@ -597,7 +837,7 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                           ),
                           const SizedBox(height: 2),
                           Text(
-                            dest['sub'] as String,
+                            dest['sub'] as String? ?? '',
                             style: const TextStyle(
                               fontSize: 12.5,
                               color: Color(0xFF00796B),
@@ -608,23 +848,36 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                       ),
                     ),
                     // Nhiệt độ & Độ ẩm
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          dest['temp'] as String,
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF004D40),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFE0F2F1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.thermostat, size: 14, color: Color(0xFF00796B)),
+                              Text(
+                                dest['temp'] as String? ?? '18 - 24°C',
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF004D40),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                        Text(
-                          'Ẩm ${dest['humidity']}',
-                          style: TextStyle(
-                              fontSize: 11, color: Colors.grey.shade500),
-                        ),
-                      ],
+                          Text(
+                            'Ẩm ${dest['humidity'] ?? "75%"}',
+                            style: const TextStyle(
+                                fontSize: 10.5, color: Color(0xFF00796B), fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -632,9 +885,9 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
 
                 // Đoạn tóm tắt highlight
                 Text(
-                  dest['highlight'] as String,
+                  dest['highlight'] as String? ?? '',
                   style: TextStyle(
-                    fontSize: 13,
+                    fontSize: 12.5,
                     color: Colors.grey.shade700,
                     height: 1.45,
                   ),
@@ -643,14 +896,183 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                 ),
                 const SizedBox(height: 12),
 
+                // ── Phần dự báo thời tiết AI Động (Theo Tuần / Theo Ngày) ──
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF7FAF8),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: const Color(0xFFB2DFDB).withValues(alpha: 0.6)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(Icons.auto_awesome, size: 14, color: Color(0xFF00897B)),
+                              const SizedBox(width: 5),
+                              Text(
+                                _forecastMode == 'weekly'
+                                    ? 'Dự báo nhiệt độ 7 ngày (AI cập nhật)'
+                                    : 'Dự báo vi khí hậu hôm nay & cuối tuần',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF004D40),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF00E676).withValues(alpha: 0.2),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Text(
+                              'Đồng bộ AI',
+                              style: TextStyle(
+                                fontSize: 9.5,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF00796B),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+
+                      // Hiển thị theo tuần (7 ngày cuộn ngang)
+                      if (_forecastMode == 'weekly' && weeklyForecast.isNotEmpty)
+                        SizedBox(
+                          height: 78,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: weeklyForecast.length,
+                            itemBuilder: (context, idx) {
+                              final day = weeklyForecast[idx] as Map<String, dynamic>;
+                              final isWeekend = (day['day'] == 'Thứ 7' ||
+                                  day['day'] == 'Chủ Nhật' ||
+                                  day['isWeekend'] == true);
+                              return Container(
+                                width: 70,
+                                margin: const EdgeInsets.only(right: 8),
+                                padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+                                decoration: BoxDecoration(
+                                  color: isWeekend ? const Color(0xFFE8F5E9) : Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: isWeekend
+                                        ? const Color(0xFF81C784)
+                                        : Colors.grey.shade200,
+                                    width: isWeekend ? 1.2 : 1.0,
+                                  ),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Text(
+                                      day['day']?.toString() ?? '',
+                                      style: TextStyle(
+                                        fontSize: 10.5,
+                                        fontWeight:
+                                            isWeekend ? FontWeight.bold : FontWeight.w600,
+                                        color: isWeekend
+                                            ? const Color(0xFF2E7D32)
+                                            : Colors.grey.shade700,
+                                      ),
+                                    ),
+                                    Text(
+                                      day['icon']?.toString() ?? '⛅',
+                                      style: const TextStyle(fontSize: 16),
+                                    ),
+                                    Text(
+                                      day['temp_display']?.toString() ??
+                                          day['temp']?.toString() ??
+                                          '18-22°C',
+                                      style: const TextStyle(
+                                        fontSize: 9.5,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF004D40),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+
+                      // Hiển thị theo ngày (3 mốc: Hôm nay, Ngày mai, Cuối tuần)
+                      if (_forecastMode == 'daily' && dailyForecast.isNotEmpty)
+                        Column(
+                          children: dailyForecast.map((d) {
+                            final map = d as Map<String, dynamic>;
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 6),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(map['icon']?.toString() ?? '🌤️', style: const TextStyle(fontSize: 15)),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              map['period']?.toString() ?? '',
+                                              style: const TextStyle(
+                                                fontSize: 11.5,
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0xFF004D40),
+                                              ),
+                                            ),
+                                            Text(
+                                              map['temp_range']?.toString() ?? map['temp']?.toString() ?? '',
+                                              style: const TextStyle(
+                                                fontSize: 11,
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0xFF00796B),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          map['advice']?.toString() ?? '',
+                                          style: TextStyle(
+                                            fontSize: 10.5,
+                                            color: Colors.grey.shade600,
+                                            height: 1.25,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 12),
+
                 // Tags
                 Wrap(
                   spacing: 6,
                   runSpacing: 4,
-                  children: (dest['tags'] as List<String>).map((tag) {
+                  children: ((dest['tags'] as List<dynamic>?) ?? []).map((tag) {
                     return Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 9, vertical: 3),
+                          horizontal: 8, vertical: 3),
                       decoration: BoxDecoration(
                         color: const Color(0xFFE0F2F1),
                         borderRadius: BorderRadius.circular(10),
@@ -659,18 +1081,57 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                         '#$tag',
                         style: const TextStyle(
                           color: Color(0xFF00796B),
-                          fontSize: 11,
+                          fontSize: 10.5,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                     );
                   }).toList(),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 14),
 
-                // ── 2 Nút Hành Động ──
+                // ── 3 Nút Hành Động ──
                 Row(
                   children: [
+                    // Nút Hỏi AI
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ChatScreen(
+                              deviceId: widget.activeDeviceId ?? 'SA-001',
+                            ),
+                          ),
+                        );
+                      },
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFEDE7F6),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.smart_toy_outlined, size: 16, color: Colors.deepPurple),
+                            SizedBox(width: 4),
+                            Text(
+                              'Hỏi AI',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.deepPurple,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+
+                    // Nút Xem chi tiết & Lộ trình
                     Expanded(
                       child: OutlinedButton.icon(
                         onPressed: () {
@@ -682,41 +1143,49 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                             ),
                           );
                         },
-                        icon: const Icon(Icons.explore_outlined, size: 16),
+                        icon: const Icon(Icons.explore_outlined, size: 15),
                         label: const Text(
-                          'Xem Chi Tiết & Lộ Trình',
+                          'Chi Tiết & Lộ Trình',
                           style: TextStyle(
-                              fontSize: 12.5, fontWeight: FontWeight.bold),
+                              fontSize: 12, fontWeight: FontWeight.bold),
                         ),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: const Color(0xFF00796B),
                           side: const BorderSide(
                               color: Color(0xFF00796B), width: 1.2),
-                          padding: const EdgeInsets.symmetric(vertical: 11),
+                          padding: const EdgeInsets.symmetric(vertical: 10),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12)),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    ElevatedButton.icon(
+                    const SizedBox(width: 8),
+
+                    // Nút Thêm Chuyến Đi Cuối Tuần
+                    ElevatedButton(
                       onPressed: () => showWeekendTripDialog(context, dest),
-                      icon: const Icon(Icons.add_task_rounded,
-                          size: 16, color: Colors.white),
-                      label: const Text(
-                        'Thêm Cuối Tuần',
-                        style: TextStyle(
-                            fontSize: 12.5,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white),
-                      ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF00796B),
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 14, vertical: 11),
+                            horizontal: 12, vertical: 10),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12)),
                         elevation: 0,
+                      ),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.add_task_rounded,
+                              size: 15, color: Colors.white),
+                          SizedBox(width: 4),
+                          Text(
+                            '+ Cuối Tuần',
+                            style: TextStyle(
+                                fontSize: 11.5,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        ],
                       ),
                     ),
                   ],

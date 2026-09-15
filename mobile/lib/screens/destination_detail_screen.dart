@@ -629,6 +629,10 @@ class _DestinationDetailScreenState extends State<DestinationDetailScreen> {
                           height: 1.55),
                     ),
                   ),
+                  const SizedBox(height: 20),
+
+                  // Section AI: Dự báo vi khí hậu & Nhiệt độ do AI cập nhật
+                  _buildAIWeatherForecastCard(dest),
                   const SizedBox(height: 24),
 
                   // Section 1: Highlights
@@ -697,6 +701,220 @@ class _DestinationDetailScreenState extends State<DestinationDetailScreen> {
               color: Color(0xFF004D40)),
         ),
       ],
+    );
+  }
+
+  Widget _buildAIWeatherForecastCard(Map<String, dynamic> dest) {
+    final weeklyForecast = dest['weekly_forecast'] as List<dynamic>? ??
+        (dest['forecast'] != null && dest['forecast']['weekly'] != null
+            ? dest['forecast']['weekly'] as List<dynamic>
+            : [
+                {'day': 'Thứ 2', 'temp': '16 - 21°C', 'icon': '🌤️', 'cond': 'Nắng nhẹ'},
+                {'day': 'Thứ 3', 'temp': '15 - 20°C', 'icon': '⛅', 'cond': 'Mây mỏng'},
+                {'day': 'Thứ 4', 'temp': '16 - 22°C', 'icon': '☀️', 'cond': 'Hửng nắng'},
+                {'day': 'Thứ 5', 'temp': '15 - 21°C', 'icon': '🍃', 'cond': 'Gió mát'},
+                {'day': 'Thứ 6', 'temp': '14 - 20°C', 'icon': '🌿', 'cond': 'Khí hậu dịu'},
+                {'day': 'Thứ 7', 'temp': '13 - 19°C', 'icon': '🏔️', 'cond': 'Săn mây đẹp'},
+                {'day': 'Chủ Nhật', 'temp': '14 - 20°C', 'icon': '🌅', 'cond': 'Hoàng hôn'},
+              ]);
+
+    final dailyForecast = dest['daily_forecast'] as List<dynamic>? ??
+        (dest['forecast'] != null && dest['forecast']['daily'] != null
+            ? dest['forecast']['daily'] as List<dynamic>
+            : [
+                {'period': 'Hôm nay', 'temp': '16 - 21°C', 'icon': '🌤️', 'advice': 'Khí hậu mát mẻ, cần áo ấm nhẹ vào buổi tối.'},
+                {'period': 'Ngày mai', 'temp': '15 - 20°C', 'icon': '⛅', 'advice': 'Độ ẩm 75%, sáng sớm có sương mù đẹp mắt.'},
+                {'period': 'Cuối tuần (T7-CN)', 'temp': '13 - 19°C', 'icon': '🏔️', 'advice': 'Thời điểm vàng săn mây và nghỉ dưỡng!'},
+              ]);
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFF80CBC4), width: 1.2),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF004D40).withValues(alpha: 0.06),
+            blurRadius: 14,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Row(
+                children: [
+                  Icon(Icons.auto_awesome, color: Color(0xFF00796B), size: 18),
+                  SizedBox(width: 6),
+                  Text(
+                    'Dự báo vi khí hậu & Nhiệt độ (AI)',
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w800,
+                      color: Color(0xFF004D40),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFE0F2F1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Text(
+                  'Cập nhật tự động',
+                  style: TextStyle(
+                    fontSize: 10.5,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF00796B),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+
+          // Lời khuyên của AI
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF0FDF4),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: const Color(0xFFBBF7D0)),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('💡', style: TextStyle(fontSize: 16)),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'AI SmartAir nhận định: Điểm đến có khí hậu ôn hòa quanh năm. Cuối tuần nhiệt độ có xu hướng giảm 2°C, độ ẩm lý tưởng 70-80%, hoàn hảo cho các hoạt động săn mây, dã ngoại và cắm trại ngoài trời.',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.green.shade900,
+                      height: 1.4,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          // Dự báo theo tuần 7 ngày
+          const Text(
+            'Dự báo nhiệt độ 7 ngày trong tuần:',
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF004D40),
+            ),
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+            height: 82,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: weeklyForecast.length,
+              itemBuilder: (context, idx) {
+                final day = weeklyForecast[idx] as Map<String, dynamic>;
+                final isWeekend = (day['day'] == 'Thứ 7' ||
+                    day['day'] == 'Chủ Nhật' ||
+                    day['isWeekend'] == true);
+                return Container(
+                  width: 74,
+                  margin: const EdgeInsets.only(right: 8),
+                  padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+                  decoration: BoxDecoration(
+                    color: isWeekend ? const Color(0xFFE8F5E9) : const Color(0xFFF5F9F6),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: isWeekend ? const Color(0xFF66BB6A) : Colors.grey.shade200,
+                      width: isWeekend ? 1.2 : 1.0,
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        day['day']?.toString() ?? '',
+                        style: TextStyle(
+                          fontSize: 10.5,
+                          fontWeight: isWeekend ? FontWeight.bold : FontWeight.w600,
+                          color: isWeekend ? const Color(0xFF2E7D32) : Colors.grey.shade700,
+                        ),
+                      ),
+                      Text(
+                        day['icon']?.toString() ?? '🌤️',
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                      Text(
+                        day['temp_display']?.toString() ?? day['temp']?.toString() ?? '16-20°C',
+                        style: const TextStyle(
+                          fontSize: 9.5,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF004D40),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 14),
+
+          // Dự báo theo ngày
+          const Text(
+            'Lộ trình thời tiết theo mốc thời gian:',
+            style: TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF004D40),
+            ),
+          ),
+          const SizedBox(height: 8),
+          ...dailyForecast.map((d) {
+            final m = d as Map<String, dynamic>;
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 6),
+              child: Row(
+                children: [
+                  Text(m['icon']?.toString() ?? '🌤️', style: const TextStyle(fontSize: 15)),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: RichText(
+                      text: TextSpan(
+                        style: TextStyle(fontSize: 12, color: Colors.grey.shade800),
+                        children: [
+                          TextSpan(
+                            text: '${m['period']}: ',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, color: Color(0xFF004D40)),
+                          ),
+                          TextSpan(
+                            text: '(${m['temp_range'] ?? m['temp']}) ',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w600, color: Color(0xFF00796B)),
+                          ),
+                          TextSpan(text: m['advice']?.toString() ?? ''),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }),
+        ],
+      ),
     );
   }
 

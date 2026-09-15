@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
   // Thay YOUR_VPS_IP bằng IP thật của VPS khi deploy
-  static const String _base = 'http://10.0.2.2:3000/api';
+  static const String _base = 'https://smartair-backend.onrender.com/api';
   static const Duration _timeout = Duration(seconds: 10);
   static const Duration _aiTimeout = Duration(seconds: 20);
 
@@ -412,5 +412,33 @@ class ApiService {
       return res.statusCode == 200;
     } catch (_) {}
     return false;
+  }
+
+  // ── Du lịch sinh thái: Danh sách & Dự báo thời tiết AI ────────────
+  Future<List<dynamic>> getTourismDestinations() async {
+    try {
+      final base = await _getBaseUrl();
+      final res = await http
+          .get(Uri.parse('$base/tourism/destinations'))
+          .timeout(_timeout);
+      if (res.statusCode == 200) {
+        final data = jsonDecode(res.body) as Map<String, dynamic>;
+        return data['destinations'] as List<dynamic>? ?? [];
+      }
+    } catch (_) {}
+    return [];
+  }
+
+  Future<Map<String, dynamic>?> getTourismForecast(String id, {bool ai = true}) async {
+    try {
+      final base = await _getBaseUrl();
+      final res = await http
+          .get(Uri.parse('$base/tourism/forecast/$id?ai=$ai'))
+          .timeout(_aiTimeout);
+      if (res.statusCode == 200) {
+        return jsonDecode(res.body) as Map<String, dynamic>;
+      }
+    } catch (_) {}
+    return null;
   }
 }
