@@ -516,7 +516,12 @@ class _DeviceManagementScreenState extends State<DeviceManagementScreen> {
                                           context: context,
                                           builder: (_) =>
                                               WifiProvisioningDialog(
-                                                  deviceId: devId),
+                                                deviceId: devId,
+                                                initialIp: dev['ip_address']
+                                                    as String?,
+                                                currentSsid: dev['wifi_ssid']
+                                                    as String?,
+                                              ),
                                         );
                                       },
                                     ),

@@ -10,6 +10,10 @@ bool wifi_init_smart(const char* ap_name = "SmartAir-Setup", uint32_t portal_tim
 // Xóa cấu hình WiFi đã lưu để phát lại AP cài đặt
 void wifi_reset_settings();
 
-// Gửi JSON lên server qua HTTP POST
-int send_reading(const char* server_url, const char* device_id, const SensorReading &r);
+// Máy chủ Web nội bộ trên ESP32 để App quét và đổi Wi-Fi trực tiếp
+void wifi_server_init();
+void wifi_server_handle();
+String wifi_scan_json();
 
+// Gửi JSON lên server qua HTTP POST (hỗ trợ cả HTTPS)
+int send_reading(const char* server_url, const char* device_id, const SensorReading &r);

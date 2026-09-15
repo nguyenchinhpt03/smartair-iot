@@ -418,7 +418,8 @@ class ApiService {
   Future<Map<String, dynamic>?> getCurrentLocation() async {
     try {
       final res = await http
-          .get(Uri.parse('http://ip-api.com/json/?fields=status,country,city,lat,lon'))
+          .get(Uri.parse(
+              'http://ip-api.com/json/?fields=status,country,city,lat,lon'))
           .timeout(const Duration(seconds: 4));
       if (res.statusCode == 200) {
         final data = jsonDecode(res.body) as Map<String, dynamic>;
@@ -430,7 +431,8 @@ class ApiService {
     return null;
   }
 
-  Future<List<dynamic>> getTourismDestinations({double? lat, double? lon}) async {
+  Future<List<dynamic>> getTourismDestinations(
+      {double? lat, double? lon}) async {
     try {
       final base = await _getBaseUrl();
       String url = '$base/tourism/destinations';

@@ -48,18 +48,68 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
       'tags': ['Cắm trại', 'Đồi thông', 'Khí hậu mát lành', 'Picnic gia đình'],
       'activities': ['Leo đỉnh Vua', 'Vườn xương rồng', 'Thưởng thức gà đồi'],
       'weekly_forecast': [
-        {'day': 'Thứ 2', 'temp': '20 - 25°C', 'icon': '☀️', 'cond': 'Nắng ấm trong lành'},
-        {'day': 'Thứ 3', 'temp': '19 - 24°C', 'icon': '🍃', 'cond': 'Gió rừng thông'},
-        {'day': 'Thứ 4', 'temp': '21 - 26°C', 'icon': '🌤️', 'cond': 'Trời trong xanh'},
-        {'day': 'Thứ 5', 'temp': '20 - 25°C', 'icon': '⛅', 'cond': 'Mây mỏng che mát'},
-        {'day': 'Thứ 6', 'temp': '19 - 24°C', 'icon': '🌿', 'cond': 'Khí hậu dịu mát'},
-        {'day': 'Thứ 7', 'temp': '18 - 23°C', 'icon': '🏕️', 'cond': 'Lý tưởng cắm trại'},
-        {'day': 'Chủ Nhật', 'temp': '19 - 24°C', 'icon': '🌲', 'cond': 'Dã ngoại gia đình'},
+        {
+          'day': 'Thứ 2',
+          'temp': '20 - 25°C',
+          'icon': '☀️',
+          'cond': 'Nắng ấm trong lành'
+        },
+        {
+          'day': 'Thứ 3',
+          'temp': '19 - 24°C',
+          'icon': '🍃',
+          'cond': 'Gió rừng thông'
+        },
+        {
+          'day': 'Thứ 4',
+          'temp': '21 - 26°C',
+          'icon': '🌤️',
+          'cond': 'Trời trong xanh'
+        },
+        {
+          'day': 'Thứ 5',
+          'temp': '20 - 25°C',
+          'icon': '⛅',
+          'cond': 'Mây mỏng che mát'
+        },
+        {
+          'day': 'Thứ 6',
+          'temp': '19 - 24°C',
+          'icon': '🌿',
+          'cond': 'Khí hậu dịu mát'
+        },
+        {
+          'day': 'Thứ 7',
+          'temp': '18 - 23°C',
+          'icon': '🏕️',
+          'cond': 'Lý tưởng cắm trại'
+        },
+        {
+          'day': 'Chủ Nhật',
+          'temp': '19 - 24°C',
+          'icon': '🌲',
+          'cond': 'Dã ngoại gia đình'
+        },
       ],
       'daily_forecast': [
-        {'period': 'Hôm nay', 'temp': '20 - 25°C', 'icon': '☀️', 'advice': 'Trời nắng dịu, đường khô ráo rất đẹp.'},
-        {'period': 'Ngày mai', 'temp': '19 - 24°C', 'icon': '🍃', 'advice': 'Gió rừng thông mát mẻ, nồng độ oxy cao.'},
-        {'period': 'Cuối tuần', 'temp': '18 - 23°C', 'icon': '🏕️', 'advice': 'Nhiệt độ đồi thông giảm 3°C, tuyệt hảo để cắm trại.'},
+        {
+          'period': 'Hôm nay',
+          'temp': '20 - 25°C',
+          'icon': '☀️',
+          'advice': 'Trời nắng dịu, đường khô ráo rất đẹp.'
+        },
+        {
+          'period': 'Ngày mai',
+          'temp': '19 - 24°C',
+          'icon': '🍃',
+          'advice': 'Gió rừng thông mát mẻ, nồng độ oxy cao.'
+        },
+        {
+          'period': 'Cuối tuần',
+          'temp': '18 - 23°C',
+          'icon': '🏕️',
+          'advice': 'Nhiệt độ đồi thông giảm 3°C, tuyệt hảo để cắm trại.'
+        },
       ]
     },
     {
@@ -82,18 +132,68 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
       'tags': ['Nghỉ dưỡng', 'Săn mây', 'Khách sạn view núi', 'Ẩm thực su su'],
       'activities': ['Tháp truyền hình', 'Cổng Trời', 'Nhà thờ đá cổ'],
       'weekly_forecast': [
-        {'day': 'Thứ 2', 'temp': '17 - 22°C', 'icon': '⛅', 'cond': 'Mây vờn sườn núi'},
-        {'day': 'Thứ 3', 'temp': '16 - 21°C', 'icon': '🌫️', 'cond': 'Sương phủ lãng mạn'},
-        {'day': 'Thứ 4', 'temp': '17 - 23°C', 'icon': '🌤️', 'cond': 'Nắng nhẹ ban trưa'},
-        {'day': 'Thứ 5', 'temp': '16 - 22°C', 'icon': '🍃', 'cond': 'Khí hậu dịu mát'},
-        {'day': 'Thứ 6', 'temp': '15 - 21°C', 'icon': '☁️', 'cond': 'Biển mây bềnh bồng'},
-        {'day': 'Thứ 7', 'temp': '15 - 20°C', 'icon': '🏰', 'cond': 'Đẹp như châu Âu'},
-        {'day': 'Chủ Nhật', 'temp': '16 - 21°C', 'icon': '☕', 'cond': 'Cafe ngắm hoàng hôn'},
+        {
+          'day': 'Thứ 2',
+          'temp': '17 - 22°C',
+          'icon': '⛅',
+          'cond': 'Mây vờn sườn núi'
+        },
+        {
+          'day': 'Thứ 3',
+          'temp': '16 - 21°C',
+          'icon': '🌫️',
+          'cond': 'Sương phủ lãng mạn'
+        },
+        {
+          'day': 'Thứ 4',
+          'temp': '17 - 23°C',
+          'icon': '🌤️',
+          'cond': 'Nắng nhẹ ban trưa'
+        },
+        {
+          'day': 'Thứ 5',
+          'temp': '16 - 22°C',
+          'icon': '🍃',
+          'cond': 'Khí hậu dịu mát'
+        },
+        {
+          'day': 'Thứ 6',
+          'temp': '15 - 21°C',
+          'icon': '☁️',
+          'cond': 'Biển mây bềnh bồng'
+        },
+        {
+          'day': 'Thứ 7',
+          'temp': '15 - 20°C',
+          'icon': '🏰',
+          'cond': 'Đẹp như châu Âu'
+        },
+        {
+          'day': 'Chủ Nhật',
+          'temp': '16 - 21°C',
+          'icon': '☕',
+          'cond': 'Cafe ngắm hoàng hôn'
+        },
       ],
       'daily_forecast': [
-        {'period': 'Hôm nay', 'temp': '17 - 22°C', 'icon': '⛅', 'advice': 'Buổi chiều mát lạnh, thích hợp dạo chợ đêm.'},
-        {'period': 'Ngày mai', 'temp': '16 - 21°C', 'icon': '🌫️', 'advice': 'Độ ẩm 78%, sương mù sáng sớm ôm trọn quảng trường.'},
-        {'period': 'Cuối tuần', 'temp': '15 - 20°C', 'icon': '🏰', 'advice': 'Thời tiết 4 mùa trong ngày, mang áo ấm đi dạo phố.'},
+        {
+          'period': 'Hôm nay',
+          'temp': '17 - 22°C',
+          'icon': '⛅',
+          'advice': 'Buổi chiều mát lạnh, thích hợp dạo chợ đêm.'
+        },
+        {
+          'period': 'Ngày mai',
+          'temp': '16 - 21°C',
+          'icon': '🌫️',
+          'advice': 'Độ ẩm 78%, sương mù sáng sớm ôm trọn quảng trường.'
+        },
+        {
+          'period': 'Cuối tuần',
+          'temp': '15 - 20°C',
+          'icon': '🏰',
+          'advice': 'Thời tiết 4 mùa trong ngày, mang áo ấm đi dạo phố.'
+        },
       ]
     },
     {
@@ -127,18 +227,68 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
         'Tắm lá thuốc người Dao đỏ'
       ],
       'weekly_forecast': [
-        {'day': 'Thứ 2', 'temp': '13 - 18°C', 'icon': '🌤️', 'cond': 'Nắng nhẹ, se lạnh'},
-        {'day': 'Thứ 3', 'temp': '14 - 19°C', 'icon': '⛅', 'cond': 'Nhiều mây, thoáng'},
-        {'day': 'Thứ 4', 'temp': '12 - 17°C', 'icon': '🌫️', 'cond': 'Sương mù dày'},
-        {'day': 'Thứ 5', 'temp': '13 - 18°C', 'icon': '☀️', 'cond': 'Hửng nắng trưa'},
-        {'day': 'Thứ 6', 'temp': '14 - 20°C', 'icon': '🍃', 'cond': 'Gió mát dịu'},
-        {'day': 'Thứ 7', 'temp': '12 - 19°C', 'icon': '🏔️', 'cond': 'Biển mây Fansipan'},
-        {'day': 'Chủ Nhật', 'temp': '13 - 18°C', 'icon': '🌅', 'cond': 'Hoàng hôn Ô Quy Hồ'},
+        {
+          'day': 'Thứ 2',
+          'temp': '13 - 18°C',
+          'icon': '🌤️',
+          'cond': 'Nắng nhẹ, se lạnh'
+        },
+        {
+          'day': 'Thứ 3',
+          'temp': '14 - 19°C',
+          'icon': '⛅',
+          'cond': 'Nhiều mây, thoáng'
+        },
+        {
+          'day': 'Thứ 4',
+          'temp': '12 - 17°C',
+          'icon': '🌫️',
+          'cond': 'Sương mù dày'
+        },
+        {
+          'day': 'Thứ 5',
+          'temp': '13 - 18°C',
+          'icon': '☀️',
+          'cond': 'Hửng nắng trưa'
+        },
+        {
+          'day': 'Thứ 6',
+          'temp': '14 - 20°C',
+          'icon': '🍃',
+          'cond': 'Gió mát dịu'
+        },
+        {
+          'day': 'Thứ 7',
+          'temp': '12 - 19°C',
+          'icon': '🏔️',
+          'cond': 'Biển mây Fansipan'
+        },
+        {
+          'day': 'Chủ Nhật',
+          'temp': '13 - 18°C',
+          'icon': '🌅',
+          'cond': 'Hoàng hôn Ô Quy Hồ'
+        },
       ],
       'daily_forecast': [
-        {'period': 'Hôm nay', 'temp': '14 - 19°C', 'icon': '🌤️', 'advice': 'Khí hậu mát mẻ, cần áo ấm mỏng vào chiều tối.'},
-        {'period': 'Ngày mai', 'temp': '13 - 18°C', 'icon': '⛅', 'advice': 'Độ ẩm 80%, sáng sớm có sương mù nhẹ lãng mạn.'},
-        {'period': 'Cuối tuần', 'temp': '12 - 19°C', 'icon': '🏔️', 'advice': 'Thời điểm vàng để leo đỉnh Fansipan săn mây!'},
+        {
+          'period': 'Hôm nay',
+          'temp': '14 - 19°C',
+          'icon': '🌤️',
+          'advice': 'Khí hậu mát mẻ, cần áo ấm mỏng vào chiều tối.'
+        },
+        {
+          'period': 'Ngày mai',
+          'temp': '13 - 18°C',
+          'icon': '⛅',
+          'advice': 'Độ ẩm 80%, sáng sớm có sương mù nhẹ lãng mạn.'
+        },
+        {
+          'period': 'Cuối tuần',
+          'temp': '12 - 19°C',
+          'icon': '🏔️',
+          'advice': 'Thời điểm vàng để leo đỉnh Fansipan săn mây!'
+        },
       ]
     },
     {
@@ -158,21 +308,77 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
           'https://images.unsplash.com/photo-1534447677768-be436bb09401?w=1000&auto=format&fit=crop&q=85',
       'highlight':
           'Cao nguyên xanh ngát mênh mông với những đồi chè trái tim, vườn mận nở trắng rừng và không gian sinh thái nguyên sơ, trong vắt.',
-      'tags': ['Đồi chè', 'Rừng thông Bản Áng', 'Thác Dải Yếm', 'Sữa chua nếp cẩm'],
+      'tags': [
+        'Đồi chè',
+        'Rừng thông Bản Áng',
+        'Thác Dải Yếm',
+        'Sữa chua nếp cẩm'
+      ],
       'activities': ['Chụp ảnh đồi chè', 'Hái dâu tây', 'Khám phá thác nước'],
       'weekly_forecast': [
-        {'day': 'Thứ 2', 'temp': '17 - 23°C', 'icon': '☀️', 'cond': 'Nắng ráo thảo nguyên'},
-        {'day': 'Thứ 3', 'temp': '18 - 24°C', 'icon': '🍃', 'cond': 'Gió cao nguyên'},
-        {'day': 'Thứ 4', 'temp': '17 - 23°C', 'icon': '🌤️', 'cond': 'Trời xanh trong'},
-        {'day': 'Thứ 5', 'temp': '18 - 24°C', 'icon': '🌾', 'cond': 'Đồi chè xanh mướt'},
-        {'day': 'Thứ 6', 'temp': '16 - 22°C', 'icon': '⛅', 'cond': 'Mát dịu dễ chịu'},
-        {'day': 'Thứ 7', 'temp': '16 - 23°C', 'icon': '🍓', 'cond': 'Hái dâu cắm trại'},
-        {'day': 'Chủ Nhật', 'temp': '17 - 23°C', 'icon': '🌲', 'cond': 'Rừng thông trong lành'},
+        {
+          'day': 'Thứ 2',
+          'temp': '17 - 23°C',
+          'icon': '☀️',
+          'cond': 'Nắng ráo thảo nguyên'
+        },
+        {
+          'day': 'Thứ 3',
+          'temp': '18 - 24°C',
+          'icon': '🍃',
+          'cond': 'Gió cao nguyên'
+        },
+        {
+          'day': 'Thứ 4',
+          'temp': '17 - 23°C',
+          'icon': '🌤️',
+          'cond': 'Trời xanh trong'
+        },
+        {
+          'day': 'Thứ 5',
+          'temp': '18 - 24°C',
+          'icon': '🌾',
+          'cond': 'Đồi chè xanh mướt'
+        },
+        {
+          'day': 'Thứ 6',
+          'temp': '16 - 22°C',
+          'icon': '⛅',
+          'cond': 'Mát dịu dễ chịu'
+        },
+        {
+          'day': 'Thứ 7',
+          'temp': '16 - 23°C',
+          'icon': '🍓',
+          'cond': 'Hái dâu cắm trại'
+        },
+        {
+          'day': 'Chủ Nhật',
+          'temp': '17 - 23°C',
+          'icon': '🌲',
+          'cond': 'Rừng thông trong lành'
+        },
       ],
       'daily_forecast': [
-        {'period': 'Hôm nay', 'temp': '18 - 24°C', 'icon': '☀️', 'advice': 'Độ ẩm 65%, rất khô ráo dễ chịu để chụp ảnh đồi chè.'},
-        {'period': 'Ngày mai', 'temp': '17 - 23°C', 'icon': '🍃', 'advice': 'Nắng nhẹ ấm áp, thích hợp tham quan vườn dâu.'},
-        {'period': 'Cuối tuần', 'temp': '16 - 23°C', 'icon': '🏕️', 'advice': 'Ban đêm se lạnh 16°C, cắm trại rừng thông nhớ mang chăn mỏng.'},
+        {
+          'period': 'Hôm nay',
+          'temp': '18 - 24°C',
+          'icon': '☀️',
+          'advice': 'Độ ẩm 65%, rất khô ráo dễ chịu để chụp ảnh đồi chè.'
+        },
+        {
+          'period': 'Ngày mai',
+          'temp': '17 - 23°C',
+          'icon': '🍃',
+          'advice': 'Nắng nhẹ ấm áp, thích hợp tham quan vườn dâu.'
+        },
+        {
+          'period': 'Cuối tuần',
+          'temp': '16 - 23°C',
+          'icon': '🏕️',
+          'advice':
+              'Ban đêm se lạnh 16°C, cắm trại rừng thông nhớ mang chăn mỏng.'
+        },
       ]
     },
     {
@@ -193,20 +399,74 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
       'highlight':
           'Ruộng bậc thang xanh mướt trải dài sườn núi, khí hậu trong lành nguyên sơ, hệ thống resort sinh thái gỗ tre hòa mình tuyệt đối với thiên nhiên.',
       'tags': ['Ruộng bậc thang', 'Resort vô cực', 'Guồng nước', 'Bản Đôn'],
-      'activities': ['Bơi hồ bơi vô cực view núi', 'Trekking bản làng', 'Chèo bè tre sông Mã'],
+      'activities': [
+        'Bơi hồ bơi vô cực view núi',
+        'Trekking bản làng',
+        'Chèo bè tre sông Mã'
+      ],
       'weekly_forecast': [
-        {'day': 'Thứ 2', 'temp': '20 - 26°C', 'icon': '☀️', 'cond': 'Nắng vàng thung lũng'},
-        {'day': 'Thứ 3', 'temp': '21 - 27°C', 'icon': '🍃', 'cond': 'Gió suối mát'},
-        {'day': 'Thứ 4', 'temp': '20 - 26°C', 'icon': '🌤️', 'cond': 'Trời trong xanh'},
-        {'day': 'Thứ 5', 'temp': '19 - 25°C', 'icon': '⛅', 'cond': 'Mây nhẹ ôm bản'},
-        {'day': 'Thứ 6', 'temp': '20 - 26°C', 'icon': '🌾', 'cond': 'Lúa xanh mơn mởn'},
-        {'day': 'Thứ 7', 'temp': '19 - 25°C', 'icon': '🏊', 'cond': 'Bơi hồ vô cực'},
-        {'day': 'Chủ Nhật', 'temp': '20 - 26°C', 'icon': '🌄', 'cond': 'Hoàng hôn đại ngàn'},
+        {
+          'day': 'Thứ 2',
+          'temp': '20 - 26°C',
+          'icon': '☀️',
+          'cond': 'Nắng vàng thung lũng'
+        },
+        {
+          'day': 'Thứ 3',
+          'temp': '21 - 27°C',
+          'icon': '🍃',
+          'cond': 'Gió suối mát'
+        },
+        {
+          'day': 'Thứ 4',
+          'temp': '20 - 26°C',
+          'icon': '🌤️',
+          'cond': 'Trời trong xanh'
+        },
+        {
+          'day': 'Thứ 5',
+          'temp': '19 - 25°C',
+          'icon': '⛅',
+          'cond': 'Mây nhẹ ôm bản'
+        },
+        {
+          'day': 'Thứ 6',
+          'temp': '20 - 26°C',
+          'icon': '🌾',
+          'cond': 'Lúa xanh mơn mởn'
+        },
+        {
+          'day': 'Thứ 7',
+          'temp': '19 - 25°C',
+          'icon': '🏊',
+          'cond': 'Bơi hồ vô cực'
+        },
+        {
+          'day': 'Chủ Nhật',
+          'temp': '20 - 26°C',
+          'icon': '🌄',
+          'cond': 'Hoàng hôn đại ngàn'
+        },
       ],
       'daily_forecast': [
-        {'period': 'Hôm nay', 'temp': '20 - 26°C', 'icon': '☀️', 'advice': 'Không khí cực sạch AQI 13, rất tốt cho sức khỏe gia đình.'},
-        {'period': 'Ngày mai', 'temp': '19 - 25°C', 'icon': '🍃', 'advice': 'Khí hậu thung lũng trong lành, thư thái nghỉ dưỡng.'},
-        {'period': 'Cuối tuần', 'temp': '19 - 25°C', 'icon': '🏊', 'advice': 'Bơi hồ bơi vô cực ngắm ruộng bậc thang tuyệt đỉnh!'},
+        {
+          'period': 'Hôm nay',
+          'temp': '20 - 26°C',
+          'icon': '☀️',
+          'advice': 'Không khí cực sạch AQI 13, rất tốt cho sức khỏe gia đình.'
+        },
+        {
+          'period': 'Ngày mai',
+          'temp': '19 - 25°C',
+          'icon': '🍃',
+          'advice': 'Khí hậu thung lũng trong lành, thư thái nghỉ dưỡng.'
+        },
+        {
+          'period': 'Cuối tuần',
+          'temp': '19 - 25°C',
+          'icon': '🏊',
+          'advice': 'Bơi hồ bơi vô cực ngắm ruộng bậc thang tuyệt đỉnh!'
+        },
       ]
     },
     {
@@ -226,21 +486,80 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
           'https://images.unsplash.com/photo-1570789210967-2cac24afeb00?w=1000&auto=format&fit=crop&q=85',
       'highlight':
           'Hệ sinh thái núi đá vôi ngập nước ngoạn mục, chèo thuyền nan len lỏi qua các hang động kỳ bí trên làn nước xanh ngọc bích.',
-      'tags': ['Di sản UNESCO', 'Đi thuyền nan', 'Non nước hữu tình', 'Hang động'],
-      'activities': ['Chèo thuyền Tràng An', 'Thăm chùa Bái Đính', 'Thưởng thức dê núi'],
+      'tags': [
+        'Di sản UNESCO',
+        'Đi thuyền nan',
+        'Non nước hữu tình',
+        'Hang động'
+      ],
+      'activities': [
+        'Chèo thuyền Tràng An',
+        'Thăm chùa Bái Đính',
+        'Thưởng thức dê núi'
+      ],
       'weekly_forecast': [
-        {'day': 'Thứ 2', 'temp': '22 - 27°C', 'icon': '☀️', 'cond': 'Nắng vàng non nước'},
-        {'day': 'Thứ 3', 'temp': '21 - 26°C', 'icon': '⛅', 'cond': 'Gió mát lòng hồ'},
-        {'day': 'Thứ 4', 'temp': '22 - 28°C', 'icon': '🌤️', 'cond': 'Trời trong mây trắng'},
-        {'day': 'Thứ 5', 'temp': '21 - 27°C', 'icon': '🍃', 'cond': 'Mát mẻ dễ chịu'},
-        {'day': 'Thứ 6', 'temp': '20 - 26°C', 'icon': '🚣', 'cond': 'Thuyền nan êm ả'},
-        {'day': 'Thứ 7', 'temp': '21 - 27°C', 'icon': '⛰️', 'cond': 'Kỳ quan thiên nhiên'},
-        {'day': 'Chủ Nhật', 'temp': '22 - 27°C', 'icon': '🌿', 'cond': 'Bái Đính an yên'},
+        {
+          'day': 'Thứ 2',
+          'temp': '22 - 27°C',
+          'icon': '☀️',
+          'cond': 'Nắng vàng non nước'
+        },
+        {
+          'day': 'Thứ 3',
+          'temp': '21 - 26°C',
+          'icon': '⛅',
+          'cond': 'Gió mát lòng hồ'
+        },
+        {
+          'day': 'Thứ 4',
+          'temp': '22 - 28°C',
+          'icon': '🌤️',
+          'cond': 'Trời trong mây trắng'
+        },
+        {
+          'day': 'Thứ 5',
+          'temp': '21 - 27°C',
+          'icon': '🍃',
+          'cond': 'Mát mẻ dễ chịu'
+        },
+        {
+          'day': 'Thứ 6',
+          'temp': '20 - 26°C',
+          'icon': '🚣',
+          'cond': 'Thuyền nan êm ả'
+        },
+        {
+          'day': 'Thứ 7',
+          'temp': '21 - 27°C',
+          'icon': '⛰️',
+          'cond': 'Kỳ quan thiên nhiên'
+        },
+        {
+          'day': 'Chủ Nhật',
+          'temp': '22 - 27°C',
+          'icon': '🌿',
+          'cond': 'Bái Đính an yên'
+        },
       ],
       'daily_forecast': [
-        {'period': 'Hôm nay', 'temp': '22 - 27°C', 'icon': '☀️', 'advice': 'Thời tiết tạnh ráo, chèo thuyền ngắm hang động rất đẹp.'},
-        {'period': 'Ngày mai', 'temp': '21 - 26°C', 'icon': '⛅', 'advice': 'Gió hồ mát dịu, nên đi thuyền vào khung giờ sáng.'},
-        {'period': 'Cuối tuần', 'temp': '21 - 27°C', 'icon': '⛰️', 'advice': 'Thời điểm tuyệt đẹp để khám phá trọn vẹn danh thắng.'},
+        {
+          'period': 'Hôm nay',
+          'temp': '22 - 27°C',
+          'icon': '☀️',
+          'advice': 'Thời tiết tạnh ráo, chèo thuyền ngắm hang động rất đẹp.'
+        },
+        {
+          'period': 'Ngày mai',
+          'temp': '21 - 26°C',
+          'icon': '⛅',
+          'advice': 'Gió hồ mát dịu, nên đi thuyền vào khung giờ sáng.'
+        },
+        {
+          'period': 'Cuối tuần',
+          'temp': '21 - 27°C',
+          'icon': '⛰️',
+          'advice': 'Thời điểm tuyệt đẹp để khám phá trọn vẹn danh thắng.'
+        },
       ]
     },
     {
@@ -260,21 +579,76 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
           'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1000&auto=format&fit=crop&q=85',
       'highlight':
           'Thủ phủ nghỉ dưỡng vi khí hậu mát lạnh hàng đầu cả nước với bạt ngàn rừng thông ba lá tạo nồng độ oxy và ion âm cực lớn.',
-      'tags': ['Rừng thông', 'Hồ Tuyền Lâm', 'Đồi hoa cẩm tú cầu', 'Cafe ngắm mây'],
+      'tags': [
+        'Rừng thông',
+        'Hồ Tuyền Lâm',
+        'Đồi hoa cẩm tú cầu',
+        'Cafe ngắm mây'
+      ],
       'activities': ['Chèo SUP hồ Tuyền Lâm', 'Săn mây Cầu Đất', 'Hái dâu tây'],
       'weekly_forecast': [
-        {'day': 'Thứ 2', 'temp': '15 - 22°C', 'icon': '⛅', 'cond': 'Mát dịu se lạnh'},
-        {'day': 'Thứ 3', 'temp': '14 - 21°C', 'icon': '🌫️', 'cond': 'Sương sớm hồ Tuyền Lâm'},
-        {'day': 'Thứ 4', 'temp': '15 - 22°C', 'icon': '☀️', 'cond': 'Nắng vàng đồi chè'},
-        {'day': 'Thứ 5', 'temp': '14 - 22°C', 'icon': '🍃', 'cond': 'Gió rừng thông vi vu'},
-        {'day': 'Thứ 6', 'temp': '13 - 21°C', 'icon': '☕', 'cond': 'Cực hợp uống cafe ấm'},
-        {'day': 'Thứ 7', 'temp': '13 - 20°C', 'icon': '☁️', 'cond': 'Săn mây Cầu Đất'},
-        {'day': 'Chủ Nhật', 'temp': '14 - 21°C', 'icon': '🍓', 'cond': 'Vườn dâu thơm mát'},
+        {
+          'day': 'Thứ 2',
+          'temp': '15 - 22°C',
+          'icon': '⛅',
+          'cond': 'Mát dịu se lạnh'
+        },
+        {
+          'day': 'Thứ 3',
+          'temp': '14 - 21°C',
+          'icon': '🌫️',
+          'cond': 'Sương sớm hồ Tuyền Lâm'
+        },
+        {
+          'day': 'Thứ 4',
+          'temp': '15 - 22°C',
+          'icon': '☀️',
+          'cond': 'Nắng vàng đồi chè'
+        },
+        {
+          'day': 'Thứ 5',
+          'temp': '14 - 22°C',
+          'icon': '🍃',
+          'cond': 'Gió rừng thông vi vu'
+        },
+        {
+          'day': 'Thứ 6',
+          'temp': '13 - 21°C',
+          'icon': '☕',
+          'cond': 'Cực hợp uống cafe ấm'
+        },
+        {
+          'day': 'Thứ 7',
+          'temp': '13 - 20°C',
+          'icon': '☁️',
+          'cond': 'Săn mây Cầu Đất'
+        },
+        {
+          'day': 'Chủ Nhật',
+          'temp': '14 - 21°C',
+          'icon': '🍓',
+          'cond': 'Vườn dâu thơm mát'
+        },
       ],
       'daily_forecast': [
-        {'period': 'Hôm nay', 'temp': '15 - 22°C', 'icon': '⛅', 'advice': 'Thời tiết se lạnh êm đềm, cần áo len nhẹ vào ban đêm.'},
-        {'period': 'Ngày mai', 'temp': '14 - 21°C', 'icon': '🌫️', 'advice': 'Sáng sớm 14°C sương mù dày, 8h hửng nắng vàng.'},
-        {'period': 'Cuối tuần', 'temp': '13 - 20°C', 'icon': '☁️', 'advice': 'Săn mây Cầu Đất vào 5h30 sáng cực kỳ ngoạn mục!'},
+        {
+          'period': 'Hôm nay',
+          'temp': '15 - 22°C',
+          'icon': '⛅',
+          'advice': 'Thời tiết se lạnh êm đềm, cần áo len nhẹ vào ban đêm.'
+        },
+        {
+          'period': 'Ngày mai',
+          'temp': '14 - 21°C',
+          'icon': '🌫️',
+          'advice': 'Sáng sớm 14°C sương mù dày, 8h hửng nắng vàng.'
+        },
+        {
+          'period': 'Cuối tuần',
+          'temp': '13 - 20°C',
+          'icon': '☁️',
+          'advice': 'Săn mây Cầu Đất vào 5h30 sáng cực kỳ ngoạn mục!'
+        },
       ]
     },
   ];
@@ -309,7 +683,8 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
       );
       if (online.isNotEmpty && mounted) {
         setState(() {
-          _destinationsData = online.map((e) => Map<String, dynamic>.from(e as Map)).toList();
+          _destinationsData =
+              online.map((e) => Map<String, dynamic>.from(e as Map)).toList();
         });
       }
     } catch (_) {}
@@ -317,14 +692,20 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
 
   // Hàm tính khoảng cách và thời gian di chuyển chuẩn xác từ GPS máy đến điểm du lịch
   Map<String, String> _calculateDistance(double? destLat, double? destLon) {
-    if (_userLat == null || _userLon == null || destLat == null || destLon == null) {
+    if (_userLat == null ||
+        _userLon == null ||
+        destLat == null ||
+        destLon == null) {
       return {'distance': 'Đang tính...', 'duration': '...'};
     }
 
     const p = 0.017453292519943295; // Math.PI / 180
-    final a = 0.5 - math.cos((destLat - _userLat!) * p) / 2 +
-        math.cos(_userLat! * p) * math.cos(destLat * p) *
-        (1 - math.cos((destLon - _userLon!) * p)) / 2;
+    final a = 0.5 -
+        math.cos((destLat - _userLat!) * p) / 2 +
+        math.cos(_userLat! * p) *
+            math.cos(destLat * p) *
+            (1 - math.cos((destLon - _userLon!) * p)) /
+            2;
     final straightKm = 12742 * math.asin(math.sqrt(a));
 
     // Đường bộ VN dài hơn đường chim bay ~28% do uốn lượn địa hình & đèo dốc
@@ -372,8 +753,10 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
       final name = (d['name'] ?? '').toString().toLowerCase();
       final loc = (d['location'] ?? '').toString().toLowerCase();
       final sub = (d['sub'] ?? '').toString().toLowerCase();
-      final matchesSearch =
-          query.isEmpty || name.contains(query) || loc.contains(query) || sub.contains(query);
+      final matchesSearch = query.isEmpty ||
+          name.contains(query) ||
+          loc.contains(query) ||
+          sub.contains(query);
       return matchesRegion && matchesSearch;
     }).toList();
 
@@ -434,7 +817,8 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFF00E676).withValues(alpha: 0.4),
+                                color: const Color(0xFF00E676)
+                                    .withValues(alpha: 0.4),
                                 blurRadius: 8,
                                 offset: const Offset(0, 2),
                               )
@@ -443,7 +827,8 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                           child: const Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.auto_awesome, size: 13, color: Color(0xFF00382E)),
+                              Icon(Icons.auto_awesome,
+                                  size: 13, color: Color(0xFF00382E)),
                               SizedBox(width: 4),
                               Text(
                                 'AI DỰ BÁO NHIỆT ĐỘ & GPS THỰC TẾ',
@@ -513,7 +898,8 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                       color: const Color(0xFFE0F2F1),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.my_location, size: 16, color: Color(0xFF00796B)),
+                    child: const Icon(Icons.my_location,
+                        size: 16, color: Color(0xFF00796B)),
                   ),
                   const SizedBox(width: 10),
                   Expanded(
@@ -539,7 +925,8 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                               const SizedBox(
                                 width: 10,
                                 height: 10,
-                                child: CircularProgressIndicator(strokeWidth: 1.5),
+                                child:
+                                    CircularProgressIndicator(strokeWidth: 1.5),
                               )
                             else
                               const Text(
@@ -559,14 +946,16 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Khoảng cách đang được tính chuẩn từ: $_userCity'),
+                          content: Text(
+                              'Khoảng cách đang được tính chuẩn từ: $_userCity'),
                           backgroundColor: const Color(0xFF00796B),
                         ),
                       );
                     },
                     borderRadius: BorderRadius.circular(8),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: const Color(0xFFE0F2F1),
                         borderRadius: BorderRadius.circular(8),
@@ -636,7 +1025,8 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                       children: [
                         Expanded(
                           child: GestureDetector(
-                            onTap: () => setState(() => _forecastMode = 'weekly'),
+                            onTap: () =>
+                                setState(() => _forecastMode = 'weekly'),
                             child: AnimatedContainer(
                               duration: const Duration(milliseconds: 200),
                               padding: const EdgeInsets.symmetric(vertical: 8),
@@ -648,7 +1038,8 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                                 boxShadow: _forecastMode == 'weekly'
                                     ? [
                                         BoxShadow(
-                                          color: const Color(0xFF00796B).withValues(alpha: 0.3),
+                                          color: const Color(0xFF00796B)
+                                              .withValues(alpha: 0.3),
                                           blurRadius: 6,
                                           offset: const Offset(0, 2),
                                         )
@@ -661,13 +1052,17 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                                   Icon(
                                     Icons.calendar_view_week_rounded,
                                     size: 16,
-                                    color: _forecastMode == 'weekly' ? Colors.white : const Color(0xFF004D40),
+                                    color: _forecastMode == 'weekly'
+                                        ? Colors.white
+                                        : const Color(0xFF004D40),
                                   ),
                                   const SizedBox(width: 6),
                                   Text(
                                     'Dự Báo 7 Ngày Tuần Này',
                                     style: TextStyle(
-                                      color: _forecastMode == 'weekly' ? Colors.white : const Color(0xFF004D40),
+                                      color: _forecastMode == 'weekly'
+                                          ? Colors.white
+                                          : const Color(0xFF004D40),
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12,
                                     ),
@@ -679,7 +1074,8 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                         ),
                         Expanded(
                           child: GestureDetector(
-                            onTap: () => setState(() => _forecastMode = 'daily'),
+                            onTap: () =>
+                                setState(() => _forecastMode = 'daily'),
                             child: AnimatedContainer(
                               duration: const Duration(milliseconds: 200),
                               padding: const EdgeInsets.symmetric(vertical: 8),
@@ -691,7 +1087,8 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                                 boxShadow: _forecastMode == 'daily'
                                     ? [
                                         BoxShadow(
-                                          color: const Color(0xFF00796B).withValues(alpha: 0.3),
+                                          color: const Color(0xFF00796B)
+                                              .withValues(alpha: 0.3),
                                           blurRadius: 6,
                                           offset: const Offset(0, 2),
                                         )
@@ -704,13 +1101,17 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                                   Icon(
                                     Icons.today_rounded,
                                     size: 16,
-                                    color: _forecastMode == 'daily' ? Colors.white : const Color(0xFF004D40),
+                                    color: _forecastMode == 'daily'
+                                        ? Colors.white
+                                        : const Color(0xFF004D40),
                                   ),
                                   const SizedBox(width: 6),
                                   Text(
                                     'Dự Báo Theo Ngày',
                                     style: TextStyle(
-                                      color: _forecastMode == 'daily' ? Colors.white : const Color(0xFF004D40),
+                                      color: _forecastMode == 'daily'
+                                          ? Colors.white
+                                          : const Color(0xFF004D40),
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12,
                                     ),
@@ -982,7 +1383,8 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                     const SizedBox(width: 8),
                     // Nhiệt độ & Độ ẩm
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 6),
                       decoration: BoxDecoration(
                         color: const Color(0xFFE0F2F1),
                         borderRadius: BorderRadius.circular(12),
@@ -993,7 +1395,8 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Icon(Icons.thermostat, size: 14, color: Color(0xFF00796B)),
+                              const Icon(Icons.thermostat,
+                                  size: 14, color: Color(0xFF00796B)),
                               Text(
                                 dest['temp'] as String? ?? '18 - 24°C',
                                 style: const TextStyle(
@@ -1007,7 +1410,9 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                           Text(
                             'Ẩm ${dest['humidity'] ?? "75%"}',
                             style: const TextStyle(
-                                fontSize: 10, color: Color(0xFF00796B), fontWeight: FontWeight.w500),
+                                fontSize: 10,
+                                color: Color(0xFF00796B),
+                                fontWeight: FontWeight.w500),
                           ),
                         ],
                       ),
@@ -1035,7 +1440,8 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                   decoration: BoxDecoration(
                     color: const Color(0xFFF7FAF8),
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: const Color(0xFFB2DFDB).withValues(alpha: 0.6)),
+                    border: Border.all(
+                        color: const Color(0xFFB2DFDB).withValues(alpha: 0.6)),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1045,7 +1451,8 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                         children: [
                           Row(
                             children: [
-                              const Icon(Icons.auto_awesome, size: 14, color: Color(0xFF00897B)),
+                              const Icon(Icons.auto_awesome,
+                                  size: 14, color: Color(0xFF00897B)),
                               const SizedBox(width: 5),
                               Text(
                                 _forecastMode == 'weekly'
@@ -1060,9 +1467,11 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                             ],
                           ),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 6, vertical: 2),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF00E676).withValues(alpha: 0.2),
+                              color: const Color(0xFF00E676)
+                                  .withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: const Text(
@@ -1079,23 +1488,28 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                       const SizedBox(height: 10),
 
                       // Hiển thị theo tuần (7 ngày cuộn ngang)
-                      if (_forecastMode == 'weekly' && weeklyForecast.isNotEmpty)
+                      if (_forecastMode == 'weekly' &&
+                          weeklyForecast.isNotEmpty)
                         SizedBox(
                           height: 78,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: weeklyForecast.length,
                             itemBuilder: (context, idx) {
-                              final day = weeklyForecast[idx] as Map<String, dynamic>;
+                              final day =
+                                  weeklyForecast[idx] as Map<String, dynamic>;
                               final isWeekend = (day['day'] == 'Thứ 7' ||
                                   day['day'] == 'Chủ Nhật' ||
                                   day['isWeekend'] == true);
                               return Container(
                                 width: 70,
                                 margin: const EdgeInsets.only(right: 8),
-                                padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 6, horizontal: 4),
                                 decoration: BoxDecoration(
-                                  color: isWeekend ? const Color(0xFFE8F5E9) : Colors.white,
+                                  color: isWeekend
+                                      ? const Color(0xFFE8F5E9)
+                                      : Colors.white,
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(
                                     color: isWeekend
@@ -1105,14 +1519,16 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                                   ),
                                 ),
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
                                   children: [
                                     Text(
                                       day['day']?.toString() ?? '',
                                       style: TextStyle(
                                         fontSize: 10.5,
-                                        fontWeight:
-                                            isWeekend ? FontWeight.bold : FontWeight.w600,
+                                        fontWeight: isWeekend
+                                            ? FontWeight.bold
+                                            : FontWeight.w600,
                                         color: isWeekend
                                             ? const Color(0xFF2E7D32)
                                             : Colors.grey.shade700,
@@ -1149,14 +1565,17 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(map['icon']?.toString() ?? '🌤️', style: const TextStyle(fontSize: 15)),
+                                  Text(map['icon']?.toString() ?? '🌤️',
+                                      style: const TextStyle(fontSize: 15)),
                                   const SizedBox(width: 8),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                               map['period']?.toString() ?? '',
@@ -1167,7 +1586,9 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                                               ),
                                             ),
                                             Text(
-                                              map['temp_range']?.toString() ?? map['temp']?.toString() ?? '',
+                                              map['temp_range']?.toString() ??
+                                                  map['temp']?.toString() ??
+                                                  '',
                                               style: const TextStyle(
                                                 fontSize: 11,
                                                 fontWeight: FontWeight.bold,
@@ -1205,7 +1626,8 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
-                          children: ((dest['tags'] as List<dynamic>?) ?? []).map((tag) {
+                          children: ((dest['tags'] as List<dynamic>?) ?? [])
+                              .map((tag) {
                             return Container(
                               margin: const EdgeInsets.only(right: 6),
                               padding: const EdgeInsets.symmetric(
@@ -1242,7 +1664,8 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                       },
                       borderRadius: BorderRadius.circular(12),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 4),
                         decoration: BoxDecoration(
                           color: const Color(0xFFEDE7F6),
                           borderRadius: BorderRadius.circular(12),
@@ -1251,7 +1674,8 @@ class _EcoTourismScreenState extends State<EcoTourismScreen> {
                         child: const Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.smart_toy_outlined, size: 14, color: Colors.deepPurple),
+                            Icon(Icons.smart_toy_outlined,
+                                size: 14, color: Colors.deepPurple),
                             SizedBox(width: 4),
                             Text(
                               'Hỏi AI',

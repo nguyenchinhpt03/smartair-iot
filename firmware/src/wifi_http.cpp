@@ -1,15 +1,98 @@
 #include "wifi_http.h"
 #include <WiFi.h>
 #include <HTTPClient.h>
+#include <WiFiClientSecure.h>
 #include <ArduinoJson.h>
-
 #include <WiFiManager.h>
+#include <WebServer.h>
+
+static WebServer localServer(80);
+static bool localServerStarted = false;
+
+String wifi_scan_json() {
+    Serial.println("[WiFi Scan] Đang quét sóng các mạng Wi-Fi ở gần ESP32...");
+    int n = WiFi.scanNetworks(false, true); // Quét nhanh
+    StaticJsonDocument<1536> doc;
+    JsonArray arr = doc.to<JsonArray>();
+
+    for (int i = 0; i < n && i < 15; ++i) {
+        String ssid = WiFi.SSID(i);
+        if (ssid.length() == 0) continue;
+        JsonObject obj = arr.createNestedObject();
+        obj["ssid"] = ssid;
+        obj["rssi"] = WiFi.RSSI(i);
+        obj["secure"] = (WiFi.encryptionType(i) != WIFI_AUTH_OPEN);
+    }
+    WiFi.scanDelete();
+
+    String out;
+    serializeJson(doc, out);
+    return out;
+}
+
+void wifi_server_init() {
+    if (localServerStarted) return;
+
+    localServer.on("/wifi-scan", HTTP_GET, []() {
+        String json = wifi_scan_json();
+        localServer.sendHeader("Access-Control-Allow-Origin", "*");
+        localServer.send(200, "application/json", json);
+    });
+
+    localServer.on("/wifi-status", HTTP_GET, []() {
+        StaticJsonDocument<256> doc;
+        doc["ssid"] = WiFi.SSID();
+        doc["ip"] = WiFi.localIP().toString();
+        doc["rssi"] = WiFi.RSSI();
+        doc["connected"] = (WiFi.status() == WL_CONNECTED);
+        String out;
+        serializeJson(doc, out);
+        localServer.sendHeader("Access-Control-Allow-Origin", "*");
+        localServer.send(200, "application/json", out);
+    });
+
+    auto handle_save = []() {
+        String ssid = localServer.arg("s");
+        String pass = localServer.arg("p");
+        if (ssid.length() == 0) {
+            ssid = localServer.arg("ssid");
+            pass = localServer.arg("password");
+        }
+        localServer.sendHeader("Access-Control-Allow-Origin", "*");
+        localServer.sendHeader("Access-Control-Allow-Headers", "*");
+        if (ssid.length() > 0) {
+            Serial.printf("[WiFi] Nhận cấu hình Wi-Fi mới: %s\n", ssid.c_str());
+            localServer.send(200, "application/json", "{\"status\":\"ok\",\"msg\":\"Connecting to " + ssid + "\"}");
+            delay(400);
+            WiFi.disconnect();
+            delay(200);
+            WiFi.begin(ssid.c_str(), pass.c_str());
+        } else {
+            localServer.send(400, "application/json", "{\"status\":\"error\",\"msg\":\"Missing SSID\"}");
+        }
+    };
+
+    localServer.on("/wifi-save", HTTP_POST, handle_save);
+    localServer.on("/wifi-save", HTTP_GET, handle_save);
+
+    // Endpoint WiFiManager tương thích
+    localServer.on("/wifisave", HTTP_POST, handle_save);
+    localServer.on("/wifisave", HTTP_GET, handle_save);
+
+    localServer.begin();
+    localServerStarted = true;
+    Serial.printf("[LocalServer] Máy chủ quét Wi-Fi nội bộ đã mở tại: http://%s/\n", WiFi.localIP().toString().c_str());
+}
+
+void wifi_server_handle() {
+    if (localServerStarted) {
+        localServer.handleClient();
+    }
+}
 
 bool wifi_init_smart(const char* ap_name, uint32_t portal_timeout_sec) {
     WiFiManager wm;
 
-    // Giới hạn thời gian chờ cấu hình (mặc định 180 giây)
-    // Nếu hết giờ mà không có ai kết nối cấu hình, ESP32 vẫn tiếp tục chạy offline
     wm.setConfigPortalTimeout(portal_timeout_sec);
     wm.setTitle("SmartAir - Cài Đặt Wi-Fi");
 
@@ -19,7 +102,6 @@ bool wifi_init_smart(const char* ap_name, uint32_t portal_timeout_sec) {
     Serial.println("[WiFiManager] (Kết nối điện thoại vào mạng trên -> trang cài đặt sẽ tự hiện)");
     Serial.println("══════════════════════════════════════════════════════");
 
-    // Tự kết nối WiFi đã lưu. Nếu thất bại, tự mở AP cấu hình Captive Portal
     bool res = wm.autoConnect(ap_name);
 
     if (!res) {
@@ -28,6 +110,7 @@ bool wifi_init_smart(const char* ap_name, uint32_t portal_timeout_sec) {
     }
 
     Serial.printf("[WiFiManager] Kết nối thành công! IP: %s\n", WiFi.localIP().toString().c_str());
+    wifi_server_init();
     return true;
 }
 
@@ -36,8 +119,6 @@ void wifi_reset_settings() {
     wm.resetSettings();
     Serial.println("[WiFiManager] Đã xóa bộ nhớ Wi-Fi.");
 }
-
-#include <WiFiClientSecure.h>
 
 int send_reading(const char* server_url, const char* device_id, const SensorReading &r) {
     if (WiFi.status() != WL_CONNECTED) {

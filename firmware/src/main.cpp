@@ -103,6 +103,7 @@ void setup() {
 //  LOOP
 // ═══════════════════════════════════════════════════════════════════
 void loop() {
+    wifi_server_handle();
     unsigned long now = millis();
 
     // ── Đọc BME280 + PMS5003 mỗi 10 giây ────────────────────────

@@ -594,8 +594,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
             onPressed: () {
               showDialog(
                 context: context,
-                builder: (_) =>
-                    WifiProvisioningDialog(deviceId: _currentDeviceId),
+                builder: (_) => WifiProvisioningDialog(
+                  deviceId: _currentDeviceId,
+                  initialIp: _data?['dev_ip'] as String?,
+                  currentSsid: _wifiSsid,
+                ),
               );
             },
           ),
@@ -764,7 +767,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               context: context,
                                               builder: (_) =>
                                                   WifiProvisioningDialog(
-                                                      deviceId: _currentDeviceId),
+                                                deviceId: _currentDeviceId,
+                                                initialIp: _data?['dev_ip']
+                                                    as String?,
+                                                currentSsid: _wifiSsid,
+                                              ),
                                             ).then((_) => _load());
                                           },
                                           borderRadius:
@@ -800,7 +807,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                     fontSize: 11,
                                                     fontWeight: FontWeight.bold,
                                                     color: isOnline
-                                                        ? const Color(0xFF00796B)
+                                                        ? const Color(
+                                                            0xFF00796B)
                                                         : Colors.grey.shade700,
                                                   ),
                                                   overflow:
