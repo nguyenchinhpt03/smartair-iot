@@ -709,22 +709,72 @@ class _DestinationDetailScreenState extends State<DestinationDetailScreen> {
         (dest['forecast'] != null && dest['forecast']['weekly'] != null
             ? dest['forecast']['weekly'] as List<dynamic>
             : [
-                {'day': 'Thứ 2', 'temp': '16 - 21°C', 'icon': '🌤️', 'cond': 'Nắng nhẹ'},
-                {'day': 'Thứ 3', 'temp': '15 - 20°C', 'icon': '⛅', 'cond': 'Mây mỏng'},
-                {'day': 'Thứ 4', 'temp': '16 - 22°C', 'icon': '☀️', 'cond': 'Hửng nắng'},
-                {'day': 'Thứ 5', 'temp': '15 - 21°C', 'icon': '🍃', 'cond': 'Gió mát'},
-                {'day': 'Thứ 6', 'temp': '14 - 20°C', 'icon': '🌿', 'cond': 'Khí hậu dịu'},
-                {'day': 'Thứ 7', 'temp': '13 - 19°C', 'icon': '🏔️', 'cond': 'Săn mây đẹp'},
-                {'day': 'Chủ Nhật', 'temp': '14 - 20°C', 'icon': '🌅', 'cond': 'Hoàng hôn'},
+                {
+                  'day': 'Thứ 2',
+                  'temp': '16 - 21°C',
+                  'icon': '🌤️',
+                  'cond': 'Nắng nhẹ'
+                },
+                {
+                  'day': 'Thứ 3',
+                  'temp': '15 - 20°C',
+                  'icon': '⛅',
+                  'cond': 'Mây mỏng'
+                },
+                {
+                  'day': 'Thứ 4',
+                  'temp': '16 - 22°C',
+                  'icon': '☀️',
+                  'cond': 'Hửng nắng'
+                },
+                {
+                  'day': 'Thứ 5',
+                  'temp': '15 - 21°C',
+                  'icon': '🍃',
+                  'cond': 'Gió mát'
+                },
+                {
+                  'day': 'Thứ 6',
+                  'temp': '14 - 20°C',
+                  'icon': '🌿',
+                  'cond': 'Khí hậu dịu'
+                },
+                {
+                  'day': 'Thứ 7',
+                  'temp': '13 - 19°C',
+                  'icon': '🏔️',
+                  'cond': 'Săn mây đẹp'
+                },
+                {
+                  'day': 'Chủ Nhật',
+                  'temp': '14 - 20°C',
+                  'icon': '🌅',
+                  'cond': 'Hoàng hôn'
+                },
               ]);
 
     final dailyForecast = dest['daily_forecast'] as List<dynamic>? ??
         (dest['forecast'] != null && dest['forecast']['daily'] != null
             ? dest['forecast']['daily'] as List<dynamic>
             : [
-                {'period': 'Hôm nay', 'temp': '16 - 21°C', 'icon': '🌤️', 'advice': 'Khí hậu mát mẻ, cần áo ấm nhẹ vào buổi tối.'},
-                {'period': 'Ngày mai', 'temp': '15 - 20°C', 'icon': '⛅', 'advice': 'Độ ẩm 75%, sáng sớm có sương mù đẹp mắt.'},
-                {'period': 'Cuối tuần (T7-CN)', 'temp': '13 - 19°C', 'icon': '🏔️', 'advice': 'Thời điểm vàng săn mây và nghỉ dưỡng!'},
+                {
+                  'period': 'Hôm nay',
+                  'temp': '16 - 21°C',
+                  'icon': '🌤️',
+                  'advice': 'Khí hậu mát mẻ, cần áo ấm nhẹ vào buổi tối.'
+                },
+                {
+                  'period': 'Ngày mai',
+                  'temp': '15 - 20°C',
+                  'icon': '⛅',
+                  'advice': 'Độ ẩm 75%, sáng sớm có sương mù đẹp mắt.'
+                },
+                {
+                  'period': 'Cuối tuần (T7-CN)',
+                  'temp': '13 - 19°C',
+                  'icon': '🏔️',
+                  'advice': 'Thời điểm vàng săn mây và nghỉ dưỡng!'
+                },
               ]);
 
     return Container(
@@ -831,12 +881,17 @@ class _DestinationDetailScreenState extends State<DestinationDetailScreen> {
                 return Container(
                   width: 74,
                   margin: const EdgeInsets.only(right: 8),
-                  padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
                   decoration: BoxDecoration(
-                    color: isWeekend ? const Color(0xFFE8F5E9) : const Color(0xFFF5F9F6),
+                    color: isWeekend
+                        ? const Color(0xFFE8F5E9)
+                        : const Color(0xFFF5F9F6),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: isWeekend ? const Color(0xFF66BB6A) : Colors.grey.shade200,
+                      color: isWeekend
+                          ? const Color(0xFF66BB6A)
+                          : Colors.grey.shade200,
                       width: isWeekend ? 1.2 : 1.0,
                     ),
                   ),
@@ -847,8 +902,11 @@ class _DestinationDetailScreenState extends State<DestinationDetailScreen> {
                         day['day']?.toString() ?? '',
                         style: TextStyle(
                           fontSize: 10.5,
-                          fontWeight: isWeekend ? FontWeight.bold : FontWeight.w600,
-                          color: isWeekend ? const Color(0xFF2E7D32) : Colors.grey.shade700,
+                          fontWeight:
+                              isWeekend ? FontWeight.bold : FontWeight.w600,
+                          color: isWeekend
+                              ? const Color(0xFF2E7D32)
+                              : Colors.grey.shade700,
                         ),
                       ),
                       Text(
@@ -856,7 +914,9 @@ class _DestinationDetailScreenState extends State<DestinationDetailScreen> {
                         style: const TextStyle(fontSize: 16),
                       ),
                       Text(
-                        day['temp_display']?.toString() ?? day['temp']?.toString() ?? '16-20°C',
+                        day['temp_display']?.toString() ??
+                            day['temp']?.toString() ??
+                            '16-20°C',
                         style: const TextStyle(
                           fontSize: 9.5,
                           fontWeight: FontWeight.bold,
@@ -887,22 +947,26 @@ class _DestinationDetailScreenState extends State<DestinationDetailScreen> {
               padding: const EdgeInsets.only(bottom: 6),
               child: Row(
                 children: [
-                  Text(m['icon']?.toString() ?? '🌤️', style: const TextStyle(fontSize: 15)),
+                  Text(m['icon']?.toString() ?? '🌤️',
+                      style: const TextStyle(fontSize: 15)),
                   const SizedBox(width: 8),
                   Expanded(
                     child: RichText(
                       text: TextSpan(
-                        style: TextStyle(fontSize: 12, color: Colors.grey.shade800),
+                        style: TextStyle(
+                            fontSize: 12, color: Colors.grey.shade800),
                         children: [
                           TextSpan(
                             text: '${m['period']}: ',
                             style: const TextStyle(
-                                fontWeight: FontWeight.bold, color: Color(0xFF004D40)),
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF004D40)),
                           ),
                           TextSpan(
                             text: '(${m['temp_range'] ?? m['temp']}) ',
                             style: const TextStyle(
-                                fontWeight: FontWeight.w600, color: Color(0xFF00796B)),
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF00796B)),
                           ),
                           TextSpan(text: m['advice']?.toString() ?? ''),
                         ],
@@ -1147,12 +1211,16 @@ class _DestinationDetailScreenState extends State<DestinationDetailScreen> {
           child: ElevatedButton.icon(
             onPressed: () => showWeekendTripDialog(context, dest),
             icon: const Icon(Icons.hiking_rounded, color: Colors.white),
-            label: const Text(
-              'Thêm Vào Chuyến Đi Cuối Tuần',
-              style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
+            label: const FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                'Thêm Vào Chuyến Đi Cuối Tuần',
+                maxLines: 1,
+                style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              ),
             ),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF00796B),
@@ -1349,9 +1417,15 @@ class _WeekendTripModalState extends State<_WeekendTripModal> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14)),
                 ),
-                child: const Text('LƯU KẾ HOẠCH CHUYẾN ĐI',
+                child: const FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    'LƯU KẾ HOẠCH CHUYẾN ĐI',
+                    maxLines: 1,
                     style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold)),
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                ),
               ),
             ),
           ),

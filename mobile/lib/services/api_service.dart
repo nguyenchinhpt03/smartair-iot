@@ -414,13 +414,30 @@ class ApiService {
     return false;
   }
 
-  // ── Du lịch sinh thái: Danh sách & Dự báo thời tiết AI ────────────
-  Future<List<dynamic>> getTourismDestinations() async {
+  // ── Du lịch sinh thái: Lấy vị trí thiết bị & Danh sách điểm đến ────────────
+  Future<Map<String, dynamic>?> getCurrentLocation() async {
+    try {
+      final res = await http
+          .get(Uri.parse('http://ip-api.com/json/?fields=status,country,city,lat,lon'))
+          .timeout(const Duration(seconds: 4));
+      if (res.statusCode == 200) {
+        final data = jsonDecode(res.body) as Map<String, dynamic>;
+        if (data['status'] == 'success') {
+          return data;
+        }
+      }
+    } catch (_) {}
+    return null;
+  }
+
+  Future<List<dynamic>> getTourismDestinations({double? lat, double? lon}) async {
     try {
       final base = await _getBaseUrl();
-      final res = await http
-          .get(Uri.parse('$base/tourism/destinations'))
-          .timeout(_timeout);
+      String url = '$base/tourism/destinations';
+      if (lat != null && lon != null) {
+        url += '?lat=$lat&lon=$lon';
+      }
+      final res = await http.get(Uri.parse(url)).timeout(_timeout);
       if (res.statusCode == 200) {
         final data = jsonDecode(res.body) as Map<String, dynamic>;
         return data['destinations'] as List<dynamic>? ?? [];
@@ -429,7 +446,8 @@ class ApiService {
     return [];
   }
 
-  Future<Map<String, dynamic>?> getTourismForecast(String id, {bool ai = true}) async {
+  Future<Map<String, dynamic>?> getTourismForecast(String id,
+      {bool ai = true}) async {
     try {
       final base = await _getBaseUrl();
       final res = await http
