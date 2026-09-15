@@ -1132,7 +1132,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               'Quản lý trạm đo IoT',
                               Icons.devices_other_outlined,
                               Colors.teal.shade800,
-                              DeviceManagementScreen(userId: widget.userId),
+                              DeviceManagementScreen(
+                                  userId: widget.userId,
+                                  activeDeviceId: _currentDeviceId),
                               aqi),
                         ],
                       ),
