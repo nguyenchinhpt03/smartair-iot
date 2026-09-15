@@ -43,6 +43,7 @@ app.use('/api', require('./routes/user'));
 app.use('/api', require('./routes/alert'));
 app.use('/api', require('./routes/chat'));
 app.use('/api', require('./routes/auth'));
+app.use('/api', require('./routes/tourism'));
 
 // ── Global error handler ─────────────────────────────────────────
 app.use((err, req, res, _next) => {
