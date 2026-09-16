@@ -768,8 +768,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                               builder: (_) =>
                                                   WifiProvisioningDialog(
                                                 deviceId: _currentDeviceId,
-                                                initialIp: _data?['dev_ip']
-                                                    as String?,
+                                                initialIp:
+                                                    _data?['dev_ip'] as String?,
                                                 currentSsid: _wifiSsid,
                                               ),
                                             ).then((_) => _load());

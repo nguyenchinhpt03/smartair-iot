@@ -461,4 +461,36 @@ class ApiService {
     } catch (_) {}
     return null;
   }
+
+  // ── Lớp 3 nâng cao: Lịch sử 7 ngày — Giá trị bình quân của từng ngày ───
+  Future<List<dynamic>> getHistory7Days(String deviceId) async {
+    try {
+      final base = await _getBaseUrl(deviceId);
+      final res = await http
+          .get(Uri.parse('$base/history-7days/$deviceId'))
+          .timeout(_timeout);
+      if (res.statusCode == 200) {
+        final decoded = jsonDecode(res.body);
+        if (decoded is List) return decoded;
+      }
+    } catch (_) {}
+    return [];
+  }
+
+  Future<List<dynamic>> searchTourismDestinations(String query,
+      {double? lat, double? lon}) async {
+    try {
+      final base = await _getBaseUrl();
+      String url = '$base/tourism/search?q=${Uri.encodeComponent(query)}';
+      if (lat != null && lon != null) {
+        url += '&lat=$lat&lon=$lon';
+      }
+      final res = await http.get(Uri.parse(url)).timeout(_timeout);
+      if (res.statusCode == 200) {
+        final data = jsonDecode(res.body) as Map<String, dynamic>;
+        return data['destinations'] as List<dynamic>? ?? [];
+      }
+    } catch (_) {}
+    return [];
+  }
 }

@@ -71,7 +71,8 @@ class _WifiProvisioningDialogState extends State<WifiProvisioningDialog>
       final realtime = await ApiService().getRealtimeReading(widget.deviceId);
       if (realtime != null && mounted) {
         final serverSsid = realtime['wifi_ssid'] as String?;
-        final serverIp = realtime['dev_ip'] as String? ?? realtime['ip_address'] as String?;
+        final serverIp =
+            realtime['dev_ip'] as String? ?? realtime['ip_address'] as String?;
         if (serverSsid != null && serverSsid.isNotEmpty) {
           _currentConnectedSsid = serverSsid;
           if (_ssidCtrl.text.isEmpty) {
@@ -555,7 +556,8 @@ class _WifiProvisioningDialogState extends State<WifiProvisioningDialog>
                                             _ssidCtrl.text == item['ssid'];
                                         final isConnected =
                                             item['isConnected'] == true;
-                                        final rssi = item['rssi'] as int? ?? -70;
+                                        final rssi =
+                                            item['rssi'] as int? ?? -70;
 
                                         return ListTile(
                                           dense: true,
@@ -836,7 +838,8 @@ class _WifiProvisioningDialogState extends State<WifiProvisioningDialog>
                                 decoration: InputDecoration(
                                   labelText: 'Địa chỉ IP của ESP32',
                                   hintText: '192.168.1.47 hoặc 192.168.4.1',
-                                  prefixIcon: const Icon(Icons.settings_ethernet,
+                                  prefixIcon: const Icon(
+                                      Icons.settings_ethernet,
                                       size: 16),
                                   border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(8)),

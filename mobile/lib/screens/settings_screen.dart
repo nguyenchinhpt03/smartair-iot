@@ -293,8 +293,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               icon: const Icon(Icons.wifi_find),
                               label: const FittedBox(
                                 fit: BoxFit.scaleDown,
-                                child: Text('Mở Trình Quản Lý Wi-Fi',
-                                    maxLines: 1),
+                                child:
+                                    Text('Mở Trình Quản Lý Wi-Fi', maxLines: 1),
                               ),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.teal,

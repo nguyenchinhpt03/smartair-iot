@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // Extended details for destinations
 final Map<String, Map<String, dynamic>> _destinationExtras = {
@@ -1194,8 +1195,11 @@ class _DestinationDetailScreenState extends State<DestinationDetailScreen> {
   }
 
   Widget _buildBottomCTA(BuildContext context, Map<String, dynamic> dest) {
+    final lat = (dest['lat'] as num?)?.toDouble() ?? 21.0833;
+    final lon = (dest['lon'] as num?)?.toDouble() ?? 105.3667;
+
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -1206,29 +1210,89 @@ class _DestinationDetailScreenState extends State<DestinationDetailScreen> {
         ],
       ),
       child: SafeArea(
-        child: SizedBox(
-          height: 52,
-          child: ElevatedButton.icon(
-            onPressed: () => showWeekendTripDialog(context, dest),
-            icon: const Icon(Icons.hiking_rounded, color: Colors.white),
-            label: const FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                'Thêm Vào Chuyến Đi Cuối Tuần',
-                maxLines: 1,
-                style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
+        child: Row(
+          children: [
+            // Nút mở Google Maps chỉ đường
+            Expanded(
+              flex: 5,
+              child: SizedBox(
+                height: 48,
+                child: OutlinedButton.icon(
+                  onPressed: () async {
+                    final uri = Uri.parse(
+                        'https://www.google.com/maps/dir/?api=1&destination=$lat,$lon');
+                    try {
+                      await launchUrl(uri,
+                          mode: LaunchMode.externalApplication);
+                    } catch (_) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Tọa độ GPS điểm đến: $lat, $lon'),
+                            backgroundColor: const Color(0xFF00796B),
+                          ),
+                        );
+                      }
+                    }
+                  },
+                  icon: const Icon(Icons.directions_car_rounded,
+                      color: Color(0xFF00796B), size: 18),
+                  label: const FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      'Chỉ Đường Map',
+                      maxLines: 1,
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF00796B),
+                      ),
+                    ),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    side:
+                        const BorderSide(color: Color(0xFF00796B), width: 1.4),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14)),
+                    padding: const EdgeInsets.symmetric(horizontal: 6),
+                  ),
+                ),
               ),
             ),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF00796B),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16)),
-              elevation: 4,
+            const SizedBox(width: 10),
+
+            // Nút thêm chuyến đi cuối tuần
+            Expanded(
+              flex: 6,
+              child: SizedBox(
+                height: 48,
+                child: ElevatedButton.icon(
+                  onPressed: () => showWeekendTripDialog(context, dest),
+                  icon: const Icon(Icons.hiking_rounded,
+                      color: Colors.white, size: 18),
+                  label: const FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      'Lên Lịch Cuối Tuần',
+                      maxLines: 1,
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF00796B),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14)),
+                    elevation: 3,
+                    padding: const EdgeInsets.symmetric(horizontal: 6),
+                  ),
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
